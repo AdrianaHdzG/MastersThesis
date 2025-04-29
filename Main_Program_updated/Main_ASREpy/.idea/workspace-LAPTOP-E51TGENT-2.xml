@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="878aef9f-8c00-4a79-b927-08da9fbc2d84" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2oNZHSp6ujqe8NrERK6KNNNIe2e" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.FEA_LTS.executor": "Run",
+    "Python.Input_general.executor": "Run",
+    "Python.Input_uncertainty_analysis.executor": "Run",
+    "Python.Input_uncertanty_analysis.executor": "Run",
+    "Python.TestingFile.executor": "Run",
+    "Python._methods.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.main_quoFEM.executor": "Run",
+    "Python.main_v_38.executor": "Run",
+    "Python.strain_analysis_gf_new.executor": "Run",
+    "Python.strain_analysis_greenfield.executor": "Run",
+    "Python.testing file.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/sebas/OneDrive - Aarhus universitet/project_2025_sebastian_peter/03_Code/Main_Program/ASREpy-main/Examples/compare_timoshenko_vs_2DFrame/Fig5Compare.py",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PythonContentEntriesConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\sebas\OneDrive - Aarhus universitet\Skrivebord\GAsMode\Old files" />
+      <recent name="C:\Users\sebas\OneDrive - Aarhus universitet\Skrivebord\GAsMode" />
+      <recent name="C:\Users\sebas\OneDrive - Aarhus universitet\Skrivebord\GAsMode\Validation Folder" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-c69650fc56ca-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.15619.17" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="878aef9f-8c00-4a79-b927-08da9fbc2d84" name="Changes" comment="" />
+      <created>1730711906539</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1730711906539</updated>
+      <workItem from="1730711907764" duration="267000" />
+      <workItem from="1730712643126" duration="772000" />
+      <workItem from="1730715277056" duration="148000" />
+      <workItem from="1730715877497" duration="87000" />
+      <workItem from="1730718426931" duration="3982000" />
+      <workItem from="1730726133067" duration="60000" />
+      <workItem from="1730798671825" duration="3528000" />
+      <workItem from="1730811332770" duration="24000" />
+      <workItem from="1730811991559" duration="261000" />
+      <workItem from="1730812639159" duration="22000" />
+      <workItem from="1731401900319" duration="526000" />
+      <workItem from="1731403448536" duration="964000" />
+      <workItem from="1731424045681" duration="1154000" />
+      <workItem from="1731425218460" duration="156000" />
+      <workItem from="1731425384516" duration="7000" />
+      <workItem from="1731425400774" duration="63000" />
+      <workItem from="1731769452346" duration="531000" />
+      <workItem from="1731912218944" duration="11000" />
+      <workItem from="1731912236567" duration="2073000" />
+      <workItem from="1731917037688" duration="13081000" />
+      <workItem from="1731942431437" duration="1529000" />
+      <workItem from="1731963334314" duration="73000" />
+      <workItem from="1731963491008" duration="32000" />
+      <workItem from="1732016548199" duration="46000" />
+      <workItem from="1732020348751" duration="1699000" />
+      <workItem from="1732088216129" duration="1573000" />
+      <workItem from="1732089810069" duration="23000" />
+      <workItem from="1732089942941" duration="2488000" />
+      <workItem from="1732092756375" duration="6115000" />
+      <workItem from="1732143893276" duration="32000" />
+      <workItem from="1732179552389" duration="775000" />
+      <workItem from="1732181001755" duration="82000" />
+      <workItem from="1732181093344" duration="9000" />
+      <workItem from="1732182272030" duration="23000" />
+      <workItem from="1732182327321" duration="32000" />
+      <workItem from="1732185080785" duration="395000" />
+      <workItem from="1732718586881" duration="1155000" />
+      <workItem from="1732881407657" duration="42000" />
+      <workItem from="1733654907360" duration="1407000" />
+      <workItem from="1733681702457" duration="1067000" />
+      <workItem from="1734171055721" duration="2347000" />
+      <workItem from="1734176829463" duration="3170000" />
+      <workItem from="1734530113462" duration="608000" />
+      <workItem from="1734561422129" duration="2626000" />
+      <workItem from="1734608719765" duration="6247000" />
+      <workItem from="1734616173409" duration="17000" />
+      <workItem from="1734779966232" duration="1537000" />
+      <workItem from="1734790313962" duration="5642000" />
+      <workItem from="1734805026957" duration="2202000" />
+      <workItem from="1734858454360" duration="6393000" />
+      <workItem from="1734878249074" duration="24000" />
+      <workItem from="1734879618332" duration="2244000" />
+      <workItem from="1744200978499" duration="23000" />
+      <workItem from="1744201729662" duration="3345000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Input_general_py$TestingFile.coverage" NAME="TestingFile Coverage Results" MODIFIED="1731922917676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/testing_file_py$main_quoFEM.coverage" NAME="main_quoFEM Coverage Results" MODIFIED="1734881782758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Input_general_py$strain_analysis_greenfield.coverage" NAME="strain_analysis_greenfield Coverage Results" MODIFIED="1731920801755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Input_general_py$Input_general.coverage" NAME="Input_general Coverage Results" MODIFIED="1732090262332" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/strain_analysis_gf_new_py$strain_analysis_greenfield.coverage" NAME="strain_analysis_greenfield Coverage Results" MODIFIED="1734615929659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Input_general_py$_methods.coverage" NAME="_methods Coverage Results" MODIFIED="1731934253532" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../School/Uni-stads/Python 3.12/Lib/site-packages/numpy/_core" />
+    <SUITE FILE_PATH="coverage/strain_analysis_gf_new_py$main_quoFEM.coverage" NAME="main_quoFEM Coverage Results" MODIFIED="1734616085271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_v_38_py$FEA_LTS.coverage" NAME="FEA_LTS Coverage Results" MODIFIED="1730801410451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_py$main.coverage" NAME="main Coverage Results" MODIFIED="1732110028233" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_quoFEM_py$main_quoFEM.coverage" NAME="main_quoFEM Coverage Results" MODIFIED="1744201784229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/strain_analysis_gf_new_py$strain_analysis_gf_new.coverage" NAME="strain_analysis_gf_new Coverage Results" MODIFIED="1734610967294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Validation Folder/Validation of gf script" />
+    <SUITE FILE_PATH="coverage/Wall_deflection_v_38_py$main.coverage" NAME="main Coverage Results" MODIFIED="1732179787057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_v_38_py$main.coverage" NAME="main Coverage Results" MODIFIED="1731425134947" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_py$Input_uncertainty_analysis.coverage" NAME="Input_uncertainty_analysis Coverage Results" MODIFIED="1732093520423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_v_38_py$main_v_38.coverage" NAME="main_v_38 Coverage Results" MODIFIED="1732720142651" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_v_38_py$Input_uncertanty_analysis.coverage" NAME="Input_uncertanty_analysis Coverage Results" MODIFIED="1730801496799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_py$main_v_38.coverage" NAME="main_v_38 Coverage Results" MODIFIED="1732093568308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Input_general_py$main_v_38.coverage" NAME="main_v_38 Coverage Results" MODIFIED="1732091990564" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/testing_file_py$testing_file.coverage" NAME="testing file Coverage Results" MODIFIED="1734780863146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Validation Folder/Validation of gf script" />
+    <SUITE FILE_PATH="coverage/Input_uncertainty_analysis_py$main.coverage" NAME="main Coverage Results" MODIFIED="1731404401313" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Input_general_py$main.coverage" NAME="main Coverage Results" MODIFIED="1732092231006" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/strain_analysis_greenfield_py$main_quoFEM.coverage" NAME="main_quoFEM Coverage Results" MODIFIED="1734616186439" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/testing_file_py$strain_analysis_greenfield.coverage" NAME="strain_analysis_greenfield Coverage Results" MODIFIED="1734791018341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_v_38_py$Input_uncertainty_analysis.coverage" NAME="Input_uncertainty_analysis Coverage Results" MODIFIED="1732720094818" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonScriptInput$main_v_38.coverage" NAME="main_v_38 Coverage Results" MODIFIED="1730712132400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Input_general_py$strain_analysis_gf_new.coverage" NAME="strain_analysis_gf_new Coverage Results" MODIFIED="1731922454508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/strain_analysis_gf_new_py$testing_file.coverage" NAME="testing file Coverage Results" MODIFIED="1734611478324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Validation Folder/Validation of gf script" />
+    <SUITE FILE_PATH="coverage/main_py$Input_general.coverage" NAME="Input_general Coverage Results" MODIFIED="1731913764471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/testing_file_py$Input_general.coverage" NAME="Input_general Coverage Results" MODIFIED="1734881780542" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

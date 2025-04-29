@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="09ac3a8e-501f-4969-b2fc-e37ad7bf4f51" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2vPMcO9rFC4sfMX4lutloqWUK9p" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.Fig5Compare.executor": "Run",
+    "Python.localStiff3D.executor": "Run",
+    "Python.main_Jinyan_quoFEM.executor": "Run",
+    "Python.plotFunctions.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/sebas/OneDrive - Aarhus universitet/project_2025_sebastian_peter/03_Code/Main_Program_updated/ASREpy-main/Examples/compare_timoshenko_vs_2DFrame/FunctionScripts",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sebas\OneDrive - Aarhus universitet\project_2025_sebastian_peter\03_Code\Main_Program_updated\ASREpy-main\Examples\compare_timoshenko_vs_2DFrame\FunctionScripts" />
+      <recent name="C:\Users\sebas\OneDrive - Aarhus universitet\project_2025_sebastian_peter\03_Code\Main_Program_updated\ASREpy-main\Examples\compare_timoshenko_vs_2DFrame\Results" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\sebas\OneDrive - Aarhus universitet\project_2025_sebastian_peter\03_Code\Main_Program_updated\ASREpy-main\Examples\compare_timoshenko_vs_2DFrame\FunctionScripts" />
+      <recent name="C:\Users\sebas\OneDrive - Aarhus universitet\project_2025_sebastian_peter\03_Code\Main_Program_updated\ASREpy-main\Examples\compare_timoshenko_vs_2DFrame\Andrea_DATA" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-c69650fc56ca-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.15619.17" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="09ac3a8e-501f-4969-b2fc-e37ad7bf4f51" name="Changes" comment="" />
+      <created>1744042334600</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1744042334600</updated>
+      <workItem from="1744042335662" duration="255000" />
+      <workItem from="1744208669405" duration="3742000" />
+      <workItem from="1744275803456" duration="7814000" />
+      <workItem from="1744361129408" duration="7358000" />
+      <workItem from="1744622279175" duration="1262000" />
+      <workItem from="1744729299820" duration="2750000" />
+      <workItem from="1744888453902" duration="9000" />
+      <workItem from="1744888471152" duration="2221000" />
+      <workItem from="1745315619419" duration="2728000" />
+      <workItem from="1745823419045" duration="10264000" />
+      <workItem from="1745841978886" duration="2872000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Fig5Compare_py$main_Jinyan_quoFEM.coverage" NAME="main_Jinyan_quoFEM Coverage Results" MODIFIED="1745841273890" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../Main_ASREpy" />
+    <SUITE FILE_PATH="coverage/Fig5Compare_py$localStiff3D.coverage" NAME="localStiff3D Coverage Results" MODIFIED="1745835641976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FunctionScripts" />
+    <SUITE FILE_PATH="coverage/Fig5Compare_py$Fig5Compare.coverage" NAME="Fig5Compare Coverage Results" MODIFIED="1745844255197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fig5Compare_py$plotFunctions.coverage" NAME="plotFunctions Coverage Results" MODIFIED="1744362989849" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FunctionScripts" />
+    <SUITE FILE_PATH="coverage/compare_ipynb$Fig5Compare.coverage" NAME="Fig5Compare Coverage Results" MODIFIED="1744732978087" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

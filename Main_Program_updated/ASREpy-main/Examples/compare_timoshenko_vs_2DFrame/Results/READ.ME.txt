@@ -1,0 +1,57 @@
+In here the naming of the variables is given:
+
+'fig7A.mat' is the standard format for results from Andreas TUST paper:
+'plot7apy.mat'  is the standard format for results from our (Jinyan) code:
+
+7a refers to the figure number in the paper
+
+---------------------------
+For the 'fig7A.mat' file, the data is structured like this:
+
+fig7A = [                                                        xnod_tot_H9_eB0_EGu; 
+                              vect_Utotf_fr_i_el_deltaT_z_H9_eB0_EGu(:,i_alpha)*1000; 
+                             vect_Utotf_fr_i_el_deltaT_z_H9_eB0_EG26(:,i_alpha)*1000; 
+                            vect_Utotf_fr_i_el_deltaT_z_H9_eB0_EG125(:,i_alpha)*1000;
+                                     Uzpg_fr_i_off_deltaT_H9_eB0_EGu(:,i_alpha)*1000; 
+                                    Uzpg_fr_i_off_deltaT_H9_eB0_EG26(:,i_alpha)*1000; 
+                                   Uzpg_fr_i_off_deltaT_H9_eB0_EG125(:,i_alpha)*1000];
+
+% Save the array to a .mat file
+save('fig7A.mat', 'fig7A');  % 
+
+1. The first value xnod describes the x-coordinate of the beam nodes
+2.  Here results are given for the d_na = 0 results (GL) and then EGu means E/G = 0
+3.  Here results are given for the d_na = 0 results (GL) and then EG26 means E/G = 2.6
+4.  Here results are given for the d_na = 0 results (GL) and then EG125 means E/G = 12.5
+5.  Here results are given for the d_na = 4.5 results (DA) and then EGu means E/G = 0
+6.  Here results are given for the d_na = 4.5 results (DA) and then EG26 means E/G = 2.6
+7.  Here results are given for the d_na = 4.5 results (DA) and then EG125 means E/G = 12.5
+
+---------------------------
+For the 'plot7apy.mat' file, the data is structured like this:
+    data = {
+        'x_coordinate': x_coord,
+        'U_disp': U,
+        'U_direction': U_dir,
+        'beamX': beamX,
+        'model': model,
+        'model_el': model_el,
+        'modelNA': modelNA,
+        'model_elNA': model_elNA,
+        'fig_num': fig_num
+    }
+
+Where: All results so far are from E/G = 2.6 only
+'x_coordinate': x_coord,    Is the x-coordinate for the greenfield nodes as a vector
+'U_disp': U,                Is the greenfield movements as a vector
+'U_direction': U_dir,       string 'Uz' or 'Ux' denoting the direction analyzed
+'beamX': beamX,             Is the x-coordinates for the beams analyzed
+'model': model,             Results from elastoplastic model, d_na = 0
+'model_el': model_el,       Results from elast model, d_na = 0
+'modelNA': modelNA,         Results from elastoplastic model, d_na = 4.5
+'model_elNA': model_elNA,   Results from elast model, d_na = 4.5
+'fig_num': fig_num          String '7a' or similar to denote figure
+
+
+
+
