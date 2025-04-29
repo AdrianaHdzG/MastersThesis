@@ -8,7 +8,7 @@ EI      = 2.30E9                        # [N*m^2]
 # BUILDING INFORMATION
 # neutral_line    = 0.01                  # [m] Distance from bottom of foundation to neutral-line
 building_height = 3                     # [m] From building top to bottom foundation
-dist_NA         = 1.5                     # [m] Like neutral-line but for Jinyan analysis. 0 indicates dist_NA is same
+dist_NA         = 0                     # [m] Like neutral-line but for Jinyan analysis. 0 indicates dist_NA is same
 # level as soil. Any value offset, where neutral axis is above ground level is treated as positive.
 
 

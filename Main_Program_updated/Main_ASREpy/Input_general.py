@@ -6,19 +6,20 @@ import numpy as np
 
 output = 'quoFEM'  # 'quoFEM' or 'General'
 
-# BUILDING PARAMETERS
-building_offset     = 2             # [m] Offset from wall
-building_width      = 1             # [m] Width of building foundation
-length_beam         = 38            # [m] Length of beam (or building)
-Ab                  = building_height * building_width  # [m^2] Cross-sectional building area
-Eb                  = EA / Ab       # [Pa] Young's modulus of building
-Ib                  = EI / Eb       # [m^4] Second moment of area 
-Gb                  = GAs / (Ab * 5/6)  # [Pa] Shear modulus
-
 # MATERIAL PARAMETERS
 # Young_modulus       = Ebeam         # [Pa] Young's modulus
 poissons_ratio      = 0.3           # [-]
 coeff_tim           = 1             # 0 for Bernoulli-Euler and 1 for Timoshenko beam
+
+# BUILDING PARAMETERS
+building_offset     = 20             # [m] Offset from wall
+building_width      = 1             # [m] Width of building foundation
+length_beam         = 20            # [m] Length of beam (or building)
+Ab                  = building_height * building_width  # [m^2] Cross-sectional building area
+Eb                  = EA / Ab       # [Pa] Young's modulus of building
+Ib                  = EI / Eb       # [m^4] Second moment of area 
+Gb                  = GAs / (Ab * (10 + 10 * poissons_ratio) / (12 + 11 * poissons_ratio))  # [Pa] Shear modulus
+
 
 # SOIL PARAMETERS
 soil_poisson        = 0.3           # [-]
