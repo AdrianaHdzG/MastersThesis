@@ -50,7 +50,8 @@ def compute_tensile_strain_Jinyan(model, model_properties):
     poissons_ratio = model_properties[4]
     shear_factor_midpoint = model_properties[5]
     building_height = model_properties[6]
-    dist_NA = model_properties[7]
+    # dist_NA = model_properties[7]
+    neutral_line = model_properties[8]
 
     As = Ab * (10 + (poissons_ratio * 10)) / (12 + (11 * poissons_ratio))  # According to Wikipedia
     GAs = Gb * As
@@ -61,8 +62,8 @@ def compute_tensile_strain_Jinyan(model, model_properties):
     # Current validation step
 
     # ( M / EI ) * d
-    strain_axial_bending_top = -(model.moment / EI) * (building_height / 2)  # Compressive stains in the top
-    strain_axial_bending_bottom = (model.moment / EI) * (building_height / 2)
+    strain_axial_bending_top = -(model.moment / EI) * (building_height - neutral_line)  # Compressive stains in the top
+    strain_axial_bending_bottom = (model.moment / EI) * neutral_line
 
     # Navier's formula
     tensile_strain_top = strain_axial_normal + strain_axial_bending_top
@@ -80,6 +81,7 @@ def compute_tensile_strain_Jinyan(model, model_properties):
 
     dataReturn = {  # Make a DATA struct for all models run
         'axial_strain_exx': strain_axial_normal,
+        'max_exx': max(strain_axial_normal),
         'strain_axial_bending_top_exx,b': strain_axial_bending_top,
         'strain_axial_bending_bottom_exx,b': strain_axial_bending_bottom,
         'exx,t,b': tensile_strain_top,
@@ -93,3 +95,35 @@ def compute_tensile_strain_Jinyan(model, model_properties):
     }
 
     return dataReturn
+
+
+# %% Function to generate output - should generally not be touched!
+def generate_output(dataReturn, max_eps_t_ssi, output_fields, error_flag=0):
+    '''
+    This function generates a string based on specified output fields and writes it to a file named `results.out`.
+    It can handle an error flag to determine whether to return real values or zeros with the last value set to 1.
+
+    Inputs:
+    - `dataReturn`: A dictionary containing various data fields and their values.
+    - `max_eps_t_ssi`: A list containing the maximum epsilon value.
+    - `output_fields`: A list of strings specifying the fields to include in the output.
+    - `error_flag` (optional): An integer (default is 0). If set to 0, the function returns real values. If set to 1, the function returns zeros except for the last value, which is set to 1.
+
+    Outputs:
+    - `results.out`: A file containing the generated output string based on the specified fields and error flag.
+    '''
+    # Generate the f.write string based on the specified output fields
+    if error_flag == 0:
+        output_values = [
+            dataReturn[field] if field in dataReturn else max_eps_t_ssi[0] if field == 'max_eps_t_ssi' else 0 for field
+            in output_fields]
+    else:
+        output_values = [0 for _ in output_fields]
+        output_values[-1] = 1
+
+    output_string = " ".join(map(str, output_values))
+
+    # Write the output to the results.out file
+    with open("results.out", "w") as f:
+        f.write(output_string)
+

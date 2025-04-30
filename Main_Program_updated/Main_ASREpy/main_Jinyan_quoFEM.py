@@ -4,18 +4,14 @@ import numpy as np
 from Input_general import *  # import * = import all
 from Wall_deflection_v_38 import wall_deflection
 from strain_analysis_greenfield import *
-from FEA_LTS import categorize_damage, compute_tensile_strain_Jinyan
+from FEA_LTS import categorize_damage, compute_tensile_strain_Jinyan, generate_output
 from localStiff3D import *
+from Output_uncertainty_analysis import *
+import sys
+from prepare_greenfield_disp import *
 # from plotDisp import *
 
 plot_var = "yes"  # "yes" or "no" to define if plot wanted or not
-
-# %% Imports used for ASREpy and plotting
-# import os
-import sys
-# import math
-# import matplotlib.pyplot as plt
-from prepare_greenfield_disp import *
 
 
 ASREpy_dir = os.path.join(os.path.dirname(__file__), "..", "ASREpy-main")
@@ -29,9 +25,17 @@ if avg_wall_disp_construction <= 0:
 if avg_wall_disp_installation <= 0:
     avg_wall_disp_installation = 0
 if avg_wall_disp_construction == 0 and avg_wall_disp_installation == 0:
-    with open("results.out", "w") as f:
-        f.write("{} {} {} {} {} {} {}".format(0, 0, 0, 0, 0, 0, 1))
-    sys.exit()
+    if output == 'quoFEM':
+        generate_output(output_fields, 0, output_fields, error_flag=1)
+        sys.exit()
+    elif output == 'OLDquoFEM':
+        with open("results.out", "w") as f:
+            f.write("{} {} {} {} {} {} {}".format(0, 0, 0, 0, 0, 0, 1))
+        sys.exit()
+    else:
+        print('Error: output field must be either "quoFEM" or "OLDquoFEM')
+        sys.exit()
+
 
 
 # %% INSTALLATION EFFECTS
@@ -140,7 +144,8 @@ model_el.set_soil_properties(Es_isotropic, soil_poisson, mu_int=0)
 model_el.run_model(combined_horizontal_displacement, np.zeros_like(combined_horizontal_displacement),
                    combined_vertical_displacement, 'strain+disp+force')
 
-model_properties = np.array([EA, EI, Gb, Ab, poissons_ratio, shear_factor_midpoint, building_height, dist_NA])
+model_properties = np.array([EA, EI, Gb, Ab, poissons_ratio, shear_factor_midpoint, building_height,
+                             dist_NA, neutral_line])
 
 # %% Convert forces if d_NA != 0
 # print('before conversion', model_el.axialForce)
@@ -182,6 +187,9 @@ max_eps_t_ssi = categorize_damage(dataReturn['max_e_t'])
 
 # Keep strains without units [-]
 if output == 'quoFEM':
+    generate_output(dataReturn, max_eps_t_ssi, output_fields, error_flag=0)
+
+elif output == 'OLDquoFEM':
     with open("results.out", "w") as f:
         f.write("{} {} {} {} {} {} {}".format(max(dataReturn['axial_strain_exx']), dataReturn['e_t_b'],
                                            dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
