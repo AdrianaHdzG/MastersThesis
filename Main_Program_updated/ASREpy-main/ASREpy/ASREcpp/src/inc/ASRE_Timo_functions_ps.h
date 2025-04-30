@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ASRE_Timo_functions
-#define ASRE_Timo_functions
+#ifndef ASRE_Timo_functions_ps
+#define ASRE_Timo_functions_ps
 #define _USE_MATH_DEFINES
 
 #include "Eigen/Dense"
@@ -1161,7 +1161,7 @@ void elastoPlasticIterationLDLT(MatrixXd Stiffness, MatrixXd openKKfoot, VectorX
 void calInternalForces(VectorXd* F_M_deltaT_el_M_ptr, VectorXd* F_N_deltaT_el_M_ptr,
     VectorXd* F_S_deltaT_el_M_ptr, VectorXd& vect_Utotf_P,
     VectorXd& vect_Utotf_T, double Efoot, double EGratio,
-    double dx, double dfoot, double bfoot, double ni_foot, int nnode) {
+    double dx, double dfoot, double bfoot, double ni_foot, int nnode, int res_loc, double loc_na) {
     int nelementi_foot = nnode - 1;
     MatrixXd KBern3Delt = KBern3D_foot_TIM(Efoot, dfoot, bfoot, dx, EGratio, ni_foot);
     // std::cout<<"KBern3Delt"<<std::endl;
@@ -1170,6 +1170,14 @@ void calInternalForces(VectorXd* F_M_deltaT_el_M_ptr, VectorXd* F_N_deltaT_el_M_
         Fin_P_2 = MatrixXd::Zero(6, nelementi_foot);
     MatrixXd Fin_T_1 = MatrixXd::Zero(6, nelementi_foot),
         Fin_T_2 = MatrixXd::Zero(6, nelementi_foot);
+
+    
+    // Adjust beam_DispL if res_loc == 2, so the resulting displacement is at the beam axis
+    if (res_loc == 2) {
+        VectorXd beam_DispL = vect_Utotf_T.segment(0, nnode * 6).head(nnode);
+        VectorXd beam_RotaT = vect_Utotf_T.segment(3, nnode * 6).head(nnode);
+        beam_DispL += beam_RotaT * d_a;  // Adjust value
+    }
 
     //VectorXd Fin_P = KBern3Delt * (VectorXd)vect_Utotf_P(seq(6 * 0, 11 + 6 * 0, 1));
     //Fin_P_1(seqN(0, 6), 0) = Fin_P(seqN(0, 6));
@@ -1203,15 +1211,16 @@ void calInternalForces(VectorXd* F_M_deltaT_el_M_ptr, VectorXd* F_N_deltaT_el_M_
 
 VectorXd calculateStrain(VectorXd* F_S_deltaT_el_ptr, VectorXd* F_M_deltaT_el_ptr,
     VectorXd* F_N_deltaT_el_ptr, double Efoot, double EGratio, double bfoot, double dfoot,
-    double ni_foot, double d_a) {
+    double ni_foot, double d_a, int res_loc, double loc_na) {
     double I_fot = bfoot * pow(dfoot, 3) / 12.0;
     double c_shear = 1.5;
     double s_shear = 0;
     // double d_a = dfoot / 2.0;
     VectorXd epsilon_dmax = c_shear * (*F_S_deltaT_el_ptr).cwiseAbs() /
         ((10 + ni_foot * 10) / (12 + 11 * ni_foot) * bfoot * dfoot) / (2 * Efoot / EGratio);
-    VectorXd epsilon_bmax_top = (*F_M_deltaT_el_ptr) * (-1 * (dfoot - d_a)) / (Efoot * I_fot);
-    VectorXd epsilon_bmax_bot = (*F_M_deltaT_el_ptr) * d_a / (Efoot * I_fot);
+    // Modified to accont for specification of neutral axis
+    VectorXd epsilon_bmax_top = (*F_M_deltaT_el_ptr) * (-1 * (dfoot - loc_na)) / (Efoot * I_fot);
+    VectorXd epsilon_bmax_bot = (*F_M_deltaT_el_ptr) * loc_na / (Efoot * I_fot);
     VectorXd epsilon_bmax_pri = (*F_M_deltaT_el_ptr).cwiseAbs() * s_shear / (Efoot * I_fot);
     VectorXd epsilon_h = (*F_N_deltaT_el_ptr) / (Efoot * (bfoot * dfoot));
     VectorXd epsilon_br_top = epsilon_bmax_top + epsilon_h;

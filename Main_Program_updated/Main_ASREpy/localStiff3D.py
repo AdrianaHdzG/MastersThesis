@@ -1,6 +1,6 @@
 import numpy as np
-def moveResultLocation(model, d_NA, numNodes):
-    model.beam_DispL += model.beam_RotaT * d_NA
+def moveResultLocation(model, d_a, numNodes):
+    model.beam_DispL += model.beam_RotaT * d_a
 
     total_disp = np.zeros([numNodes * 6, 1])
     total_disp[0::6] = model.beam_DispL.reshape(-1, 1)  # [m] Longitudinal / axial (x)

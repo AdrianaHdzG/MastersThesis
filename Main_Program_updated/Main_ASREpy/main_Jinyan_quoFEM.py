@@ -136,11 +136,19 @@ beamY = np.zeros_like(building_coords)
 beamZ = np.zeros_like(building_coords)
 qfoot = 0  # [N/m] The uniform weight applied on the beam. Unit: N/m (Weight along unit length in the longitudinal direction)
 
-## Jinyan elastic model 
-model_el = ASREpy.ASRE_Timoshenko_model(building_coords.size, building_coords, beamY, beamZ, building_height,
+## Jinyan / Peter & Seb modified elastic model
+# model_el = ASREpy.ASRE_Timoshenko_model_ps(building_coords.size, building_coords, beamY, beamZ, building_height,
+#                                         building_width, solver='elastic')
+# model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_a=dist_NA, res_loc='axis', loc_na=building_height / 2)
+# model_el.set_soil_properties(Es_isotropic, soil_poisson, mu_int=0)
+
+# Currently use standard model:
+model_el = ASREpy.ASRE_Timoshenko_model_ps(building_coords.size, building_coords, beamY, beamZ, building_height,
                                         building_width, solver='elastic')
-model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_NA=dist_NA)
+model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_a=dist_NA)
 model_el.set_soil_properties(Es_isotropic, soil_poisson, mu_int=0)
+
+
 model_el.run_model(combined_horizontal_displacement, np.zeros_like(combined_horizontal_displacement),
                    combined_vertical_displacement, 'strain+disp+force')
 
