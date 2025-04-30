@@ -89,6 +89,10 @@ model_el.run_model(Ux, np.zeros_like(Ux), Uz, 'strain+disp+force')
 # Validate data, as bending strains are wrongfully calculated atm.
 data1 = compute_tensile_strain_Jinyan(model_el, model_properties)
 
+# model_elNA = ASREpy.ASRE_Timoshenko_model_ps(beamX.size, beamX, beamY,
+#                                               beamZ, dfoot, bfoot,
+#                                               solver='elastic')
+# model_elNA.set_beam_properties(Eb, EoverG, qfoot, d_a=d_na, res_loc='axis', loc_na=dfoot/2)
 model_elNA = ASREpy.ASRE_Timoshenko_model(beamX.size, beamX, beamY,
                                               beamZ, dfoot, bfoot,
                                               solver='elastic')
@@ -97,8 +101,12 @@ model_elNA.set_soil_properties(Es, nis, mu_int)
 
 model_elNA.run_model(Ux, np.zeros_like(Ux), Uz, 'strain+disp+force')
 
+print('from Jinyan script', model_elNA.beam_DispL)
+
 # %% Translate from outer fibre displacement into beam axis displacements
+""""""
 model_elNA, total_disp = moveResultLocation(model_elNA, d_na, numNodes)
+print('from normal', model_elNA.beam_DispL)
 F_M_deltaT_el, F_N_deltaT_el, F_S_deltaT_el = compute_internal_forces(Eb * dfoot * bfoot, Eb * Ib, Eb * Ib,
                                                                       Eb / EoverG * As, Eb / EoverG * As,
                                                                       l_b / (numNodes - 1), Eb / EoverG, 1, total_disp,
@@ -108,7 +116,7 @@ model_elNA.axialForce = F_N_deltaT_el
 
 data = compute_tensile_strain_Jinyan(model_elNA, model_properties)
 
-print(data['exx,t,b'])
+# print(data['exx,t,b'])
 
 """
 internal_forces_vector = compute_internal_forces(Eb * dfoot * bfoot, Eb * Ib, Eb * Ib, Eb / EoverG * As,

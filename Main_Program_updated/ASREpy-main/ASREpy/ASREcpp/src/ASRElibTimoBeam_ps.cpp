@@ -231,7 +231,7 @@ extern "C" {
         } else if (strcmp(output, "strain") == 0) {
             VectorXd F_M_deltaT_el_M, F_N_deltaT_el_M, F_S_deltaT_el_M;
             calInternalForces(&F_M_deltaT_el_M, &F_N_deltaT_el_M, &F_S_deltaT_el_M,
-                    u_P_el, uinc, Eb, EoverG, h_el_foot, dfoot, bfoot, ni_foot, nnode, res_loc, loc_na);
+                    u_P_el, uinc, Eb, EoverG, h_el_foot, dfoot, bfoot, ni_foot, nnode, d_a, res_loc, loc_na);
             VectorXd epsilon_vector = calculateStrain(&F_S_deltaT_el_M, &F_M_deltaT_el_M,
                     &F_N_deltaT_el_M, Eb, EoverG, bfoot, dfoot, ni_foot, d_a, res_loc, loc_na);
             VectorXd result = epsilon_vector;
@@ -240,7 +240,7 @@ extern "C" {
         } else if (strcmp(output, "strain+disp") == 0) {
             VectorXd F_M_deltaT_el_M, F_N_deltaT_el_M, F_S_deltaT_el_M;
             calInternalForces(&F_M_deltaT_el_M, &F_N_deltaT_el_M, &F_S_deltaT_el_M,
-                    u_P_el, uinc, Eb, EoverG, h_el_foot, dfoot, bfoot, ni_foot, nnode, res_loc, loc_na);
+                    u_P_el, uinc, Eb, EoverG, h_el_foot, dfoot, bfoot, ni_foot, nnode, d_a, res_loc, loc_na);
             VectorXd epsilon_vector = calculateStrain(&F_S_deltaT_el_M, &F_M_deltaT_el_M,
                     &F_N_deltaT_el_M, Eb, EoverG, bfoot, dfoot, ni_foot, d_a, res_loc, loc_na);
             VectorXd strain = epsilon_vector;
@@ -252,7 +252,7 @@ extern "C" {
         } else if (strcmp(output, "strain+disp+force") == 0) {
             VectorXd F_M_deltaT_el_M, F_N_deltaT_el_M, F_S_deltaT_el_M;
             calInternalForces(&F_M_deltaT_el_M, &F_N_deltaT_el_M, &F_S_deltaT_el_M,
-                    u_P_el, uinc, Eb, EoverG, h_el_foot, dfoot, bfoot, ni_foot, nnode, res_loc, loc_na);
+                    u_P_el, uinc, Eb, EoverG, h_el_foot, dfoot, bfoot, ni_foot, nnode, d_a, res_loc, loc_na);
             VectorXd epsilon_vector = calculateStrain(&F_S_deltaT_el_M, &F_M_deltaT_el_M,
                     &F_N_deltaT_el_M, Eb, EoverG, bfoot, dfoot, ni_foot, d_a, res_loc, loc_na);
             VectorXd strain = epsilon_vector;

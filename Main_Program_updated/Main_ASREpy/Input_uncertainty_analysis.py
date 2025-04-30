@@ -8,7 +8,7 @@ EI      = 2.30E9                        # [N*m^2]
 # BUILDING INFORMATION
 building_height = 3.00                   # [m] From building top to bottom foundation
 neutral_line    = 1.00                   # [m] Neutral axis IN PURE bending. # Distance from BOTTOM FIBRE of BEAM
-dist_NA         = 0.00                   # [m] Location of beam-soil interface. 0 = beam axis, h/2 beam bottom fibre
+dist_a          = 0.00                   # [m] Location of beam-soil interface. 0 = beam axis, h/2 beam bottom fibre
 # level as soil. Any value offset, where neutral axis is above ground level is treated as positive.
 
 

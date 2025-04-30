@@ -136,29 +136,30 @@ beamY = np.zeros_like(building_coords)
 beamZ = np.zeros_like(building_coords)
 qfoot = 0  # [N/m] The uniform weight applied on the beam. Unit: N/m (Weight along unit length in the longitudinal direction)
 
-## Jinyan / Peter & Seb modified elastic model
-# model_el = ASREpy.ASRE_Timoshenko_model_ps(building_coords.size, building_coords, beamY, beamZ, building_height,
-#                                         building_width, solver='elastic')
-# model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_a=dist_NA, res_loc='axis', loc_na=building_height / 2)
-# model_el.set_soil_properties(Es_isotropic, soil_poisson, mu_int=0)
 
-# Currently use standard model:
+## Jinyan / Peter & Seb modified elastic model
 model_el = ASREpy.ASRE_Timoshenko_model_ps(building_coords.size, building_coords, beamY, beamZ, building_height,
                                         building_width, solver='elastic')
-model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_a=dist_NA)
+model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_a=dist_a)
 model_el.set_soil_properties(Es_isotropic, soil_poisson, mu_int=0)
-
+'''
+# Currently use standard model:
+model_el = ASREpy.ASRE_Timoshenko_model(building_coords.size, building_coords, beamY, beamZ, building_height,
+                                        building_width, solver='elastic')
+model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_NA=dist_a)
+model_el.set_soil_properties(Es_isotropic, soil_poisson, mu_int=0)
+'''
 
 model_el.run_model(combined_horizontal_displacement, np.zeros_like(combined_horizontal_displacement),
                    combined_vertical_displacement, 'strain+disp+force')
 
 model_properties = np.array([EA, EI, Gb, Ab, poissons_ratio, shear_factor_midpoint, building_height,
-                             dist_NA, neutral_line])
+                             dist_a, neutral_line])
 
 # %% Convert forces if d_NA != 0
 # print('before conversion', model_el.axialForce)
-if dist_NA != 0:
-    model_el, total_disp = moveResultLocation(model_el, dist_NA, num_nodes)
+if dist_a != 0:
+    model_el, total_disp = moveResultLocation(model_el, dist_a, num_nodes)
     F_M_deltaT_el, F_N_deltaT_el, F_S_deltaT_el = compute_internal_forces(EA, EI, EI, GAs, GAs, length_beam_element,
                                                                           Gb, 1, total_disp, num_nodes)
     # Use updated axial force

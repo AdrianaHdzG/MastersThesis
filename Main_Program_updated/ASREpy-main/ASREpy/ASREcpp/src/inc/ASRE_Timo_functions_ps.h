@@ -1161,7 +1161,7 @@ void elastoPlasticIterationLDLT(MatrixXd Stiffness, MatrixXd openKKfoot, VectorX
 void calInternalForces(VectorXd* F_M_deltaT_el_M_ptr, VectorXd* F_N_deltaT_el_M_ptr,
     VectorXd* F_S_deltaT_el_M_ptr, VectorXd& vect_Utotf_P,
     VectorXd& vect_Utotf_T, double Efoot, double EGratio,
-    double dx, double dfoot, double bfoot, double ni_foot, int nnode, int res_loc, double loc_na) {
+    double dx, double dfoot, double bfoot, double ni_foot, int nnode, double d_a, int res_loc, double loc_na) {
     int nelementi_foot = nnode - 1;
     MatrixXd KBern3Delt = KBern3D_foot_TIM(Efoot, dfoot, bfoot, dx, EGratio, ni_foot);
     // std::cout<<"KBern3Delt"<<std::endl;
@@ -1171,8 +1171,8 @@ void calInternalForces(VectorXd* F_M_deltaT_el_M_ptr, VectorXd* F_N_deltaT_el_M_
     MatrixXd Fin_T_1 = MatrixXd::Zero(6, nelementi_foot),
         Fin_T_2 = MatrixXd::Zero(6, nelementi_foot);
 
-    
-    // Adjust beam_DispL if res_loc == 2, so the resulting displacement is at the beam axis
+
+    // Adjust beam_DispL if res_loc == 2, so the resulting displacement is at the beam axis
     if (res_loc == 2) {
         VectorXd beam_DispL = vect_Utotf_T.segment(0, nnode * 6).head(nnode);
         VectorXd beam_RotaT = vect_Utotf_T.segment(3, nnode * 6).head(nnode);

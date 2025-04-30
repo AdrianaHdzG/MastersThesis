@@ -81,9 +81,9 @@ class ASRE_Timoshenko_model_ps:
         self.d_a = d_a  #
         self.solver = solver
         if res_loc is None or res_loc == 'base':
-            self.res_loc = 1
+            self.res_loc = int(1)
         elif res_loc == 'axis':
-            self.res_loc = 2
+            self.res_loc = int(2)
         else:
             raise ValueError('Wrong input into here')
         if loc_na is None:
@@ -101,6 +101,8 @@ class ASRE_Timoshenko_model_ps:
         CDLL
             The CDLL.
         """
+
+        '''
         if pltm == "linux" or pltm == "linux2":
             lib_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                     "ASREcpp", "bin", "macOS_arm", "libASRElibTimoBeam.so")
@@ -155,6 +157,72 @@ class ASRE_Timoshenko_model_ps:
                               c_double,  # mu_int
                               c_double,  # qz_foot
                               c_double,  # d_a
+                              c_int,     # res_loc
+                              c_double,  # res_na
+                              c_char_p,  # solver
+                              c_char_p,  # output
+                              POINTER(c_double),  # result
+                              c_int  # result_size
+                              ]
+        c_lib.run.restype = c_int
+        return c_lib
+        '''
+        if pltm == "linux" or pltm == "linux2":
+            lib_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    "ASREcpp", "bin", "macOS_arm", "libASRElibTimoBeam_ps.so")
+            if os.path.exists(lib_path):
+                c_lib = CDLL(lib_path)
+            else:
+                c_lib = None
+                message = f'ASRE is not precompiled for {pltm}, please compile the ASRE cpp library'
+        elif pltm == "darwin":
+            if platform.processor() == 'arm':
+                lib_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                        "ASREcpp", "bin", "macOS_arm", "libASRElibTimoBeam_ps.dylib")
+                if os.path.exists(lib_path):
+                    c_lib = CDLL(lib_path)
+                else:
+                    c_lib = None
+                    message = f'ASRE is not precompiled for {pltm} {platform.processor()}, please compile the ASRE cpp library'
+            else:
+                lib_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                        "ASREcpp", "bin", "macOS", "libASRElibTimoBeam_ps.dylib")
+                if os.path.exists(lib_path):
+                    c_lib = CDLL(lib_path)
+                else:
+                    c_lib = None
+                    message = f'ASRE is not precompiled for {pltm} {platform.processor()}, please compile the ASRE cpp library'
+        elif pltm == "win32":
+            lib_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    "ASREcpp", "bin", "win32", "ASRElibTimoBeam_ps.dll")
+            if os.path.exists(lib_path):
+                c_lib = CDLL(lib_path)
+            else:
+                c_lib = None
+                message = f'ASRE is not precompiled for {pltm}, please compile the ASRE cpp library'
+            # c_lib = CDLL(pkg_resources.resource_filename('ASREpy', 'ASREcpp//bin//win32//ASRElib.dll'))
+            # c_lib.printName()
+        if c_lib is None:
+            raise ImportError(message)
+        c_lib.run.argtypes = [c_int,  # nnode
+                              np.ctypeslib.ndpointer(dtype=np.float64),  # meshX
+                              np.ctypeslib.ndpointer(dtype=np.float64),  # meshY
+                              np.ctypeslib.ndpointer(dtype=np.float64),  # meshZ
+                              np.ctypeslib.ndpointer(dtype=np.float64),  # dispV
+                              np.ctypeslib.ndpointer(dtype=np.float64),  # dispL
+                              np.ctypeslib.ndpointer(dtype=np.float64),  # dispT
+                              c_double,  # Eb
+                              c_double,  # EoverG
+                              c_double,  # EsNominal
+                              c_double,  # nis
+                              c_double,  # dfoot
+                              c_double,  # bfoot
+                              c_double,  # ni_foot
+                              c_double,  # mu_int
+                              c_double,  # qz_foot
+                              c_double,  # d_a
+                              c_int,  # res_loc
+                              c_double,  # res_na
                               c_char_p,  # solver
                               c_char_p,  # output
                               POINTER(c_double),  # result
@@ -337,6 +405,8 @@ class ASRE_Timoshenko_model_ps:
             'bfoot': self.bfoot,
             'ni_foot': self.ni_foot,
             'd_a': self.d_a,
+            'res_loc': self.res_loc,
+            'loc_na': self.loc_na,
             'mu_int': self.mu_int,
             'q_foot': self.q_foot,
             'solver': self.solver,
