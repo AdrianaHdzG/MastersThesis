@@ -4,7 +4,7 @@ import numpy as np
 
 # %% INPUT PARAMETERS
 
-output = 'quoFEM'  # 'quoFEM', 'OLDquoFEM' or 'General'
+output = 'OLDquoFEM'  # 'quoFEM', 'OLDquoFEM' or 'General'
 
 # MATERIAL PARAMETERS
 # Young_modulus       = Ebeam         # [Pa] Young's modulus

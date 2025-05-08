@@ -3,12 +3,13 @@ import numpy as np
 
 from Input_general import *  # import * = import all
 from Wall_deflection_v_38 import wall_deflection
-from strain_analysis_greenfield import *
+from strain_analysis import *
 from FEA_LTS import categorize_damage, compute_tensile_strain_Jinyan, generate_output
 from localStiff3D import *
 from Output_uncertainty_analysis import *
 import sys
-from prepare_greenfield_disp import *
+import os
+# from prepare_greenfield_disp import *
 # from plotDisp import *
 
 plot_var = "yes"  # "yes" or "no" to define if plot wanted or not
@@ -16,6 +17,7 @@ plot_var = "yes"  # "yes" or "no" to define if plot wanted or not
 
 ASREpy_dir = os.path.join(os.path.dirname(__file__), "..", "ASREpy-main")
 sys.path.append(ASREpy_dir)
+sys.path.append("C:\Users\sebas\OneDrive - Aarhus universitet\project_2025_sebastian_peter\03_Code\Main_Program_updated\ASREpy-main")
 sys.path.append("D:\Main_Program_updated\ASREpy-main")
 sys.path.append("S:\Main_Program_updated\ASREpy-main")
 import ASREpy
@@ -200,8 +202,11 @@ if output == 'quoFEM':
 
 elif output == 'OLDquoFEM':
     with open("results.out", "w") as f:
-        f.write("{} {} {} {} {} {} {}".format(max(dataReturn['axial_strain_exx']), dataReturn['e_t_b'],
-                                           dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
-                                           max_eps_t_ssi[0], 0))
+        # f.write("{} {} {} {} {} {} {}".format(max(dataReturn['axial_strain_exx']), dataReturn['e_t_b'],
+        #                                    dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
+        #                                    max_eps_t_ssi[0], 0))
+        f.write("{} {} {} {} {} {} {}".format(beamZ.flatten(), dataReturn['e_t_b'],
+                                              dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
+                                              max_eps_t_ssi[0], 0))
 else:
     print('this->')

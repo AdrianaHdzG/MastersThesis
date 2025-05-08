@@ -59,10 +59,9 @@ def compute_tensile_strain_Jinyan(model, model_properties):
     # N / EA
     strain_axial_normal = model.axialForce / EA
 
-    # Current validation step
 
     # ( M / EI ) * d
-    strain_axial_bending_top = -(model.moment / EI) * (building_height - neutral_line)  # Compressive stains in the top
+    strain_axial_bending_top = -(model.moment / EI) * (building_height - neutral_line)  # Compressive strains in the top
     strain_axial_bending_bottom = (model.moment / EI) * neutral_line
 
     # Navier's formula
