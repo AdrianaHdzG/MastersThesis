@@ -2,7 +2,7 @@ import numpy as np
 # import matplotlib.pyplot as plt
 # import os
 
-def strain_analysis_greenfield(disp_vertical, disp_horizontal, length_beam_element, length_beam, nu):
+def strain_analysis_greenfield(disp_vertical, disp_horizontal, length_beam_element, length_beam, nu, flag):
     """
     Analyze the strain and deformation parameters for greenfield displacements.
 
@@ -14,22 +14,31 @@ def strain_analysis_greenfield(disp_vertical, disp_horizontal, length_beam_eleme
     nu : float - Poisson's ratio [-]
 
     Returns:
-    eps_tensile : array_like - Maximum tensile strain [-]
-    beta_max : float - Maximum angular distortion [rad]
-    horizontal_strain_max : float - Maximum horizontal strain [-]
+    dataReturn
     """
     # save_input_variables(disp_vertical, disp_horizontal, length_beam_element, length_beam, nu)
 
-    # Calculate horizontal strain
-    horizontal_strain = np.gradient(disp_horizontal[0], length_beam_element)  # [-] Horizontal strain
+    if flag == 'WALL':
+        # Calculate horizontal strain
+        horizontal_strain = np.gradient(disp_horizontal[0], length_beam_element)  # [-] Horizontal strain
 
-    vert_for_tilt = disp_vertical[0]  # Unpacking, sometimes needed
+        # Calculate tilt
+        vert_for_tilt = disp_vertical[0]  # Unpacking, sometimes needed
+        omega_greenfield = (vert_for_tilt[-1] - vert_for_tilt[0]) / length_beam  # [rad] tilt of structure
 
-    omega_greenfield = (vert_for_tilt[-1] - vert_for_tilt[0]) / length_beam  # [rad] tilt of structure
+        # Calculate slope
+        slope = np.gradient(disp_vertical[0], length_beam_element)
+    else:
+        # Calculate horizontal strain
+        horizontal_strain = np.gradient(disp_horizontal, length_beam_element)  # [-] Horizontal strain
+
+        # Calculate tilt
+        omega_greenfield = (disp_vertical[-1] - disp_vertical[0]) / length_beam  # [rad] tilt of structure
+
+        # Calculate slope
+        slope = np.gradient(disp_vertical, length_beam_element)
+
     # Calculate angular distortion
-
-    slope = np.gradient(disp_vertical[0], length_beam_element)
-
     angular_distortion = abs(slope - omega_greenfield)  # [rad] Angular distortion
 
     # print('max angular distorsion = ', max(angular_distortion), ', max horizontal strain = ', max(horizontal_strain))
@@ -76,7 +85,19 @@ def strain_analysis_greenfield(disp_vertical, disp_horizontal, length_beam_eleme
         f.write('angular_distortion: {}\n'.format((angular_distortion / 2 * 100).tolist()))
 
     '''
-    return eps_tensile, max(angular_distortion), max(horizontal_strain)
+    dataReturn = {  # Make a DATA struct for all models run
+        'eps_t': eps_tensile,  # Tensile strain along the building, length (num_elem) unit [-]
+        'eps_t_max': max(eps_tensile),  # max Tensile strain along the building, length (1) unit [-]
+        'beta_d': angular_distortion,  # Angular distorsion, length (num_elem) unit [-]
+        'beta_d_max': max(angular_distortion),  # max Angular distorsion, length (1) unit [-]
+        'eps_h': horizontal_strain,  # Horizontal strain, length (num_elem) unit [-]
+        'eps_h_max': max(horizontal_strain),  # max Horizontal strain, length (1) unit [-]
+        'S': slope,  # Greenfield slope (uz), length (num_elem) unit [-]
+        'omega_gf': omega_greenfield,  # Tilt of building, length (1) unit [-]
+
+    }
+
+    return dataReturn
 
 
 def save_input_variables(disp_vertical, disp_horizontal, length_beam_element, length_beam, nu, filename='input_variables.txt'):

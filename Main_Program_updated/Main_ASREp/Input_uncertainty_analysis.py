@@ -18,8 +18,7 @@ avg_wall_disp_installation  = 0.04      # [%] Installation effects (COV = 73.11%
 avg_wall_disp_construction  = 0.38    # [%] Construction sequence (COV = 73.11% according to Zhao and DeJong, 2023 --> standard deviation = 0.7311)
 C1                          = 0.30     # [-]
 C2                          = 0.30      # [-]
-# avg_wall_disp_installation  = -0.04      # [%] Installation effects (COV = 73.11% according to Zhao and DeJong, 2023 --> standard deviation = 0.029244)
-# avg_wall_disp_construction  = -0.38    # [%] Construction sequence (COV = 73.11% according to Zhao and DeJong, 2023 --> standard deviation = 0.7311)
+
 # SOIL INITIAL PARAMETERS
 initial_void_ratio_param    = 1         # [-] Initial_void_ratio being 1.0
 stiffness_vertical_spring   = 27        # [MN/m] (COV = 14-68% according to Zhao and DeJong, 2023. The lower limit is used --> standard deviation = 0.14)

@@ -13,7 +13,7 @@ def categorize_damage(element_strain):
     """
 
     tensile_strain = element_strain * 100  # Convert to percent
-    print("tensile strain is %", tensile_strain)
+    print("Maximum tensile strain is %", tensile_strain)
     if tensile_strain < 0.05:
         return 0, tensile_strain
     elif tensile_strain < 0.075:

@@ -1,36 +1,45 @@
 from Input_uncertainty_analysis import *
 import numpy as np
-# import scipy as sci
+import scipy
 
 # %% INPUT PARAMETERS
 
-output = 'OLDquoFEM'  # 'quoFEM', 'OLDquoFEM' or 'General'
+
+output = 'OLDquoFEM'   # 'quoFEM', 'OLDquoFEM' or 'General'
+mode = 'SSI'           # 'SA' = Greenfield strain analysis, 'SSI' Soil-Structure-Interaction analysis. SSI includes SA
+integration_mode = 'CValues'       # 'CValues' uses C1, C2, C3 or modes. 'Direct' uses a datafile like below.
+# integration_mode = 'Direct'
+input_type = 'WALL'                # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default
+solver = 'EL'                      # 'EL' is cauchy elastic solver, 'EP' is elastoplasic solver
+
+if integration_mode == 'Direct':  # Example of how to load data
+    data_wall = scipy.io.loadmat("FunctionScripts\example_wall_data.mat")
 
 # MATERIAL PARAMETERS
-# Young_modulus       = Ebeam         # [Pa] Young's modulus
+# Young_modulus       = Ebeam       # [Pa] Young's modulus
 poissons_ratio      = 0.3           # [-]
-coeff_tim           = 1             # 0 for Bernoulli-Euler and 1 for Timoshenko beam
+# coeff_tim           = 1           # 0 for Bernoulli-Euler and 1 for Timoshenko beam
 
 # BUILDING PARAMETERS
-building_offset     = 20             # [m] Offset from wall
+building_offset     = 20            # [m] Offset from wall
 building_width      = 1             # [m] Width of building foundation
 length_beam         = 20            # [m] Length of beam (or building)
 Ab                  = building_height * building_width  # [m^2] Cross-sectional building area
 Eb                  = EA / Ab       # [Pa] Young's modulus of building
-Ib                  = EI / Eb       # [m^4] Second moment of area 
+Ib                  = EI / Eb       # [m^4] Second moment of area
 Gb                  = GAs / (Ab * (10 + 10 * poissons_ratio) / (12 + 11 * poissons_ratio))  # [Pa] Shear modulus
+foundation_depth    = 2.2           # [m] Depth positive
 
 
 # SOIL PARAMETERS
 soil_poisson        = 0.3           # [-]
-includeVesic        = False         # [True/False] Allow for vesic calibration of winkler springs
 soil_ovalization    = 0             # [-] Soil ovalization
 volumetric          = 1             # [-] Volumetric
 
 # RETAINING WALL PARAMETERS
-retaining_wall_depth        = 25    # [m] Depth of the retaining wall
-shape_wall_deflection_i     = 2     # [-] Shape of wall deflection for installation effects 
-shape_wall_deflection_c     = 5     # [-] Shape of wall deflection for construction/excavation effects 
+retaining_wall_depth        = 25.0  # [m] Depth of the retaining wall
+shape_wall_deflection_i     = 2     # [-] Shape of wall deflection for installation effects
+shape_wall_deflection_c     = 5     # [-] Shape of wall deflection for construction/excavation effects
                                     # Shape of wall deflection M0-M4 | 0 = Uniform, 1 = Cantilever, 2 = Parabola type, 3 = Composite type, 4 = Kick-in type, 5 Custom
 
 # BUILDING DAMAGE
@@ -48,7 +57,7 @@ num_global_DOF            = degrees_freedom_per_node * num_nodes  # Total number
 
 # SUPPORT AND SOIL NODES
 # support_nodes = np.array([0, num_nodes - 1])    # Supports
-soil_nodes = np.arange(0, num_nodes)            # Winkler springs 
+soil_nodes = np.arange(0, num_nodes)            # Winkler springs
 
 # BUILDING COORDINATES
 building_coords           = building_offset + np.linspace(0, length_beam, num_nodes)  # x-coordinates for the building [m]
@@ -56,10 +65,10 @@ building_coords           = building_offset + np.linspace(0, length_beam, num_no
 # %% SPRING CALIBRATION 
 
 # SPRING STIFFNESS CALIBRATION
-stiffness_vertical_spring    *= 1E6         # Rewrite to N/m
-stiffness_horizontal_spring  *= 1E6
-Es_isotropic                  = stiffness_vertical_spring  # Isotropic soil
-rotational_stiffness_spring   = 0 * 1E6
+# stiffness_vertical_spring    *= 1E6         # Rewrite to N/m
+# stiffness_horizontal_spring  *= 1E6
+Es_isotropic                  = stiffness_vertical_spring * 1E6  # Isotropic soil
+# rotational_stiffness_spring   = 0 * 1E6
 
 
 # %% PARAMETER CALIBRATION AND CONVERSION
@@ -75,26 +84,11 @@ shear_factor_midpoint     = 1.5                                          # Highe
 
 # CONTROLLING THE WALL CALCULATION
 coords_normal_wall        = np.arange(length_beam_element, 100 + length_beam_element, length_beam_element)  # [m] Coordinates in the direction normal to the wall
-average_wall_displacement_normalized = avg_wall_disp_installation  # [-] Average wall displacement normalized by the wall height
 
-# %% DRAWDOWN RELATED INPUT
-
-# GROUNDWATER MOVEMENT / CORRECTION
-well_diameter             = 0.5                 # Diameter of well
-depth_of_well             = 30                  # Height of water table to bottom of aquifer [m]
-drawdown                  = 0                   # Drawdown at the well [m]
-# drawdown                  = drawdown_size       # Drawdown at the well [m]
-influence_radius          = 250                 # Influence radius of pump [m]
-specific_weight_water     = 9.82e3              # Specific weight of water [N/m^3]
-
-# SOIL PARAMETERS
-specific_weight_unsat_soil = 17e3                 # Specific weight of unsaturated soil [N/m^3]
-specific_weight_sat_soil  = 20e3                  # Specific weight of saturated soil [N/m^3]
-compression_index         = 0.3                   # Compression index [-]
-initial_void_ratio        = initial_void_ratio_param       # Initial void ratio [-]
-watertable_depth_z        = 2
-height_soil_layer         = depth_of_well + watertable_depth_z     # Height of whole soil layer [m]
+# %% FOR ELASTOPLASTIC ANALYSIS
+if solver == 'EP':
+    mu_int = np.tan(30 * np.pi / 180)
+    # LOADS ON FOOTING
+    qfoot = 3.2 * 10 * 1000  # [N] Load on the footing per running meter, necessary for good results
 
 
-# UNIT CONVERSION, 1 for [N], 1000 for output [kN] etc.
-# convert_units = 1000
