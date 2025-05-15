@@ -16,9 +16,7 @@ if integration_mode == 'Direct':  # Example of how to load data
     data_wall = scipy.io.loadmat("FunctionScripts\example_wall_data.mat")
 
 # MATERIAL PARAMETERS
-# Young_modulus       = Ebeam       # [Pa] Young's modulus
-poissons_ratio      = 0.3           # [-]
-# coeff_tim           = 1           # 0 for Bernoulli-Euler and 1 for Timoshenko beam
+poissons_ratio      = 0.3           # [-] For the building materials
 
 # BUILDING PARAMETERS
 building_offset     = 20            # [m] Offset from wall
@@ -32,7 +30,7 @@ foundation_depth    = 2.2           # [m] Depth positive
 
 
 # SOIL PARAMETERS
-soil_poisson        = 0.3           # [-]
+soil_poisson        = 0.5           # [-] Soil poisson ratio, recommended 0.5 for undrained and 0.2-0.3 for drained
 soil_ovalization    = 0             # [-] Soil ovalization
 volumetric          = 1             # [-] Volumetric
 
@@ -55,22 +53,15 @@ num_elements              = num_nodes - 1         # Number of elements
 degrees_freedom_per_node  = 3                     # Degrees of freedom per node
 num_global_DOF            = degrees_freedom_per_node * num_nodes  # Total number of DEGREES OF FREEDOM
 
-# SUPPORT AND SOIL NODES
-# support_nodes = np.array([0, num_nodes - 1])    # Supports
-soil_nodes = np.arange(0, num_nodes)            # Winkler springs
-
 # BUILDING COORDINATES
 building_coords           = building_offset + np.linspace(0, length_beam, num_nodes)  # x-coordinates for the building [m]
 
-# %% SPRING CALIBRATION 
-
+# %% SPRING CALIBRATION
 # SPRING STIFFNESS CALIBRATION
-# stiffness_vertical_spring    *= 1E6         # Rewrite to N/m
-# stiffness_horizontal_spring  *= 1E6
-Es_isotropic                  = stiffness_vertical_spring * 1E6  # Isotropic soil
-# rotational_stiffness_spring   = 0 * 1E6
+Es_isotropic                  = stiffness_vertical_spring * 1E6  # Isotropic soil (N/m/m)
 
-
+# LOADS ON FOOTING
+qfoot = 3.2 * 10 * 1000  # [N] Load on the footing per running meter, necessary for good results
 # %% PARAMETER CALIBRATION AND CONVERSION
 
 # WALL DISPLACEMENT CONVERSION TO PERCENT
@@ -88,7 +79,6 @@ coords_normal_wall        = np.arange(length_beam_element, 100 + length_beam_ele
 # %% FOR ELASTOPLASTIC ANALYSIS
 if solver == 'EP':
     mu_int = np.tan(30 * np.pi / 180)
-    # LOADS ON FOOTING
-    qfoot = 3.2 * 10 * 1000  # [N] Load on the footing per running meter, necessary for good results
+
 
 
