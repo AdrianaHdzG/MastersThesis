@@ -3,8 +3,8 @@
 import sys
 
 sys.path.append('FunctionScripts')
-# from Input_general import *  # import * = import all
-from Input_General_TUST import *
+from Input_general import *  # import * = import all
+# from Input_General_TUST import *
 from Wall_deflection_v_38 import wall_deflection, wall_deflection_direct
 from strain_analysis import *
 from FEA_LTS import categorize_damage, compute_tensile_strain_Jinyan, generate_output
@@ -33,18 +33,17 @@ if input_type == 'WALL':
         avg_wall_disp_installation = 0
     if avg_wall_disp_construction == 0 and avg_wall_disp_installation == 0 and integration_mode == 'CValues':
         Error_Variable = 1
-        print('here')
         if mode == 'SA':
             if output == 'quoFEM':
                 generate_output(output_fields, 0, output_fields, error_flag=Error_Variable)
                 sys.exit()
             elif output == 'OLDquoFEM':
                 with open("results.out", "w") as f:
-                    str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
+                    str1 = " ".join(map(str, 0 * np.zeros([num_nodes])))  # Converts numpy array to string
                     # highest_damage_greenfield
                     # max_tensile_eps_gf
                     # Error_Variable
-                    f.write("{} {} {} {} {} {}".format(Error_Variable, 0, 0, str1, str1, str1))
+                    f.write("{} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, str1, str1, str1, str1, str1))
                 sys.exit()
             else:
                 sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -54,15 +53,16 @@ if input_type == 'WALL':
                 sys.exit()
             elif output == 'OLDquoFEM':
                 with open("results.out", "w") as f:
-                    str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
-                    str2 = " ".join(map(str, np.zeros([num_elements * 2, 0])))  # Converts numpy array to string
+                    str1 = " ".join(map(str, np.zeros([num_nodes])))  # Converts numpy array to string
+                    str2 = " ".join(map(str, np.zeros([num_elements * 2])))  # Converts numpy array to string
                     # highest_damage_greenfield
                     # max_tensile_eps_gf
                     # highest_damage_SSI
                     # max_tensile_eps_SSI
                     # Error_Variable
-                    f.write("{} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, 0, 0, str1,
-                                                                            str1, str1, str1, str2, str2, str2, str2))
+                    f.write("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, 0, 0,
+                                                                                  str1, str1, str1, str1, str1, str1,
+                                                                                  str2, str2, str2, str2))
                 sys.exit()
             else:
                 sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -187,11 +187,12 @@ elif input_type == 'TUNNEL':
                     sys.exit()
                 elif output == 'OLDquoFEM':
                     with open("results.out", "w") as f:
-                        str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
+                        str1 = " ".join(map(str, np.zeros([num_nodes])))  # Converts numpy array to string
                         # highest_damage_greenfield
                         # max_tensile_eps_gf
                         # Error_Variable
-                        f.write("{} {} {} {} {} {}".format(Error_Variable, 0, 0, str1, str1, str1))
+                        f.write("{} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, str1, str1, str1, str1,
+                                                                 str1))
                     sys.exit()
                 else:
                     sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -201,16 +202,16 @@ elif input_type == 'TUNNEL':
                     sys.exit()
                 elif output == 'OLDquoFEM':
                     with open("results.out", "w") as f:
-                        str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
-                        str2 = " ".join(map(str, np.zeros([num_elements * 2, 0])))  # Converts numpy array to string
+                        str1 = " ".join(map(str, np.zeros([num_nodes])))  # Converts numpy array to string
+                        str2 = " ".join(map(str, np.zeros([num_elements * 2])))  # Converts numpy array to string
                         # highest_damage_greenfield
                         # max_tensile_eps_gf
                         # highest_damage_SSI
                         # max_tensile_eps_SSI
                         # Error_Variable
-                        f.write("{} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, 0, 0, str1,
-                                                                                str1, str1, str1, str2, str2, str2,
-                                                                                str2))
+                        f.write("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, 0, 0,
+                                                                                      str1, str1, str1, str1, str1,
+                                                                                      str1, str2, str2, str2, str2))
                     sys.exit()
                 else:
                     sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -221,7 +222,7 @@ elif input_type == 'TUNNEL':
             from prepare_greenfield_disp_file import prepare_greenfield
 
             (vertical_displacement_ground_building, horizontal_displacement_ground_building,
-             building_coords) = prepare_greenfield(z0, vlt, Kt, D_t, length_beam, eccentricity, num_nodes)
+             building_coords) = prepare_greenfield(z_t, vlt, Kt, D_t, length_beam, eccentricity, num_nodes)
 
             # %Update
             vertical_displacement_ground_building = -1 * np.array(
@@ -251,12 +252,14 @@ if mode == 'SA':
             string1 = " ".join(map(str, dataSA['eps_t']))  # Converts numpy array to string
             string2 = " ".join(map(str, dataSA['beta_d']))
             string3 = " ".join(map(str, dataSA['eps_h']))
+            string4 = " ".join(map(str, combined_horizontal_displacement))
+            string5 = " ".join(map(str, combined_vertical_displacement))
             print('vector_length = ', len(dataSA['eps_t']))
             # highest_damage_greenfield
             # max_tensile_eps_gf
             # Error_Variable
-            f.write("{} {} {} {} {} {}".format(Error_Variable, highest_damage_greenfield, max_tensile_eps_gf,
-                                               string1, string2, string3))
+            f.write("{} {} {} {} {} {} {} {}".format(Error_Variable, highest_damage_greenfield, max_tensile_eps_gf,
+                                               string1, string2, string3, string4, string5))
             sys.exit()
     else:
         sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -341,56 +344,125 @@ highest_damage_SSI, max_eps_t_ssi = categorize_damage(dataReturn['max_e_t'])
 
 # %% Validation done
 # Keep strains without units [-]
-if output == 'quoFEM':
-    generate_output(dataReturn, max_eps_t_ssi, output_fields, error_flag=0)
+if input_type == 'TUNNEL':
+    if output == 'quoFEM':
+        generate_output(dataReturn, max_eps_t_ssi, output_fields, error_flag=0)
 
-elif output == 'OLDquoFEM':
-    with open("results.out", "w") as f:
-        # f.write("{} {} {} {} {} {} {}".format(max(dataReturn['axial_strain_exx']), dataReturn['e_t_b'],
-        #                                    dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
-        #                                    max_eps_t_ssi[0], 0))
-        # f.write("{} {} {} {} {} {} {}".format(beamZ.flatten(), dataReturn['e_t_b'],
-        #                                       dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
-        #                                       max_eps_t_ssi[0], 0))
-        print(' ')
-        print('--------- OUTPUT INFORMATION ---------')
-        print('Total number of QoI = 13')
-        # Error_Variable
-        # highest_damage_greenfield
-        # max_tensile_eps_gf
-        # highest_damage_SSI
-        # max_eps_t_SSI
-        # Greenfield Strain analysis
-        print('There are 5 scalars: Error_Variable, highest_damage_greenfield, max_tensile_eps_gf, highest_damage_SSI,'
-              ' max_eps_t_SSI')
-        str1 = " ".join(map(str, dataSA['eps_t']))  # Converts numpy array to string
-        str2 = " ".join(map(str, dataSA['beta_d']))
-        str3 = " ".join(map(str, dataSA['eps_h']))
-        str4 = " ".join(map(str, building_coords))
-        print('vector_length (Str1)  = ', len(dataSA['eps_t']), ', vector_length (Str2)  = ', len(dataSA['beta_d']),
-              ', vector_length (Str3)  = ', len(dataSA['eps_h']), ', vector_length (Str4)  = ', len(building_coords))
-        # Interaction analysis
-        str5 = " ".join(map(str, dataReturn['eps_t']))  # Converts numpy array to string
-        str6 = " ".join(map(str, dataReturn['strain_axial_bending_top_exx,b']))
-        str7 = " ".join(map(str, dataReturn['strain_axial_bending_bottom_exx,b']))
-        str8 = " ".join(map(str, dataReturn['tensile_strain_midpoint']))
-        # print(len(dataReturn['eps_t']), len(dataReturn['strain_axial_bending_top_exx,b']),
-        #       len(dataReturn['strain_axial_bending_bottom_exx,b']), len(dataReturn['tensile_strain_midpoint']))
-        # print('vector_length = ', len(dataReturn['tensile_strain_midpoint']))
-        print('vector_length (Str5)  = ', len(dataReturn['tensile_strain_midpoint']), ', vector_length (Str6)  = ',
-              len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str7)  = ',
-              len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str8)  = ',
-              len(dataReturn['tensile_strain_midpoint']))
+    elif output == 'OLDquoFEM':
+        with open("results.out", "w") as f:
+            with open("results.out", "w") as f:
+                # f.write("{} {} {} {} {} {} {}".format(max(dataReturn['axial_strain_exx']), dataReturn['e_t_b'],
+                #                                    dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
+                #                                    max_eps_t_ssi[0], 0))
+                # f.write("{} {} {} {} {} {} {}".format(beamZ.flatten(), dataReturn['e_t_b'],
+                #                                       dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
+                #                                       max_eps_t_ssi[0], 0))
+                print(' ')
+                print('--------- OUTPUT INFORMATION ---------')
+                print('Total number of QoI = 15')
+                # Error_Variable
+                # highest_damage_greenfield
+                # max_tensile_eps_gf
+                # highest_damage_SSI
+                # max_eps_t_SSI
+                # Greenfield Strain analysis
+                print(
+                    'There are 5 scalars: Error_Variable, highest_damage_greenfield, max_tensile_eps_gf, highest_damage_SSI,'
+                    ' max_eps_t_SSI')
+                str1 = " ".join(map(str, dataSA['eps_t']))  # Converts numpy array to string
+                str2 = " ".join(map(str, dataSA['beta_d']))
+                str3 = " ".join(map(str, dataSA['eps_h']))
+                str4 = " ".join(map(str, combined_horizontal_displacement))
+                str5 = " ".join(map(str, combined_vertical_displacement))
+                str6 = " ".join(map(str, building_coords))
+                print('vector_length (Str1)  = ', len(dataSA['eps_t']), ', vector_length (Str2)  = ',
+                      len(dataSA['beta_d']),
+                      ', vector_length (Str3)  = ', len(dataSA['eps_h']), ', vector_length (Str4)  = ',
+                      len(combined_horizontal_displacement), ', vector_length (Str5)  = ',
+                      len(combined_vertical_displacement), ', vector_length (Str6)  = ', len(building_coords))
+                # Interaction analysis
+                str7 = " ".join(map(str, dataReturn['eps_t']))  # Converts numpy array to string
+                str8 = " ".join(map(str, dataReturn['strain_axial_bending_top_exx,b']))
+                str9 = " ".join(map(str, dataReturn['strain_axial_bending_bottom_exx,b']))
+                str10 = " ".join(map(str, dataReturn['tensile_strain_midpoint']))
+                # print(len(dataReturn['eps_t']), len(dataReturn['strain_axial_bending_top_exx,b']),
+                #       len(dataReturn['strain_axial_bending_bottom_exx,b']), len(dataReturn['tensile_strain_midpoint']))
+                # print('vector_length = ', len(dataReturn['tensile_strain_midpoint']))
+                print('vector_length (Str7)  = ', len(dataReturn['tensile_strain_midpoint']),
+                      ', vector_length (Str8)  = ',
+                      len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str9)  = ',
+                      len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str10)  = ',
+                      len(dataReturn['tensile_strain_midpoint']))
 
+                f.write("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable,
+                                                                              highest_damage_greenfield,
+                                                                              max_tensile_eps_gf, highest_damage_SSI,
+                                                                              max_eps_t_ssi, str1, str2, str3, str4,
+                                                                              str5,
+                                                                              str6, str7, str8, str9, str10))
+                print(' ')
+                print('--------- SCRIPT DONE ---------')
+    else:
+        print('this-> is an error')
 
-        f.write("{} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, highest_damage_greenfield,
-                                                                max_tensile_eps_gf, highest_damage_SSI, max_eps_t_ssi,
-                                                                str1, str2, str3, str4, str5, str6, str7, str8))
-        print(' ')
-        print('--------- SCRIPT DONE ---------')
+elif input_type == 'WALL':
+    if output == 'quoFEM':
+        generate_output(dataReturn, max_eps_t_ssi, output_fields, error_flag=0)
+
+    elif output == 'OLDquoFEM':
+        with open("results.out", "w") as f:
+            # f.write("{} {} {} {} {} {} {}".format(max(dataReturn['axial_strain_exx']), dataReturn['e_t_b'],
+            #                                    dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
+            #                                    max_eps_t_ssi[0], 0))
+            # f.write("{} {} {} {} {} {} {}".format(beamZ.flatten(), dataReturn['e_t_b'],
+            #                                       dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
+            #                                       max_eps_t_ssi[0], 0))
+            print(' ')
+            print('--------- OUTPUT INFORMATION ---------')
+            print('Total number of QoI = 15')
+            # Error_Variable
+            # highest_damage_greenfield
+            # max_tensile_eps_gf
+            # highest_damage_SSI
+            # max_eps_t_SSI
+            # Greenfield Strain analysis
+            print(
+                'There are 5 scalars: Error_Variable, highest_damage_greenfield, max_tensile_eps_gf, highest_damage_SSI,'
+                ' max_eps_t_SSI')
+            str1 = " ".join(map(str, dataSA['eps_t']))  # Converts numpy array to string
+            str2 = " ".join(map(str, dataSA['beta_d']))
+            str3 = " ".join(map(str, dataSA['eps_h']))
+            str4 = " ".join(map(str, combined_horizontal_displacement))
+            str5 = " ".join(map(str, combined_vertical_displacement))
+            str6 = " ".join(map(str, building_coords))
+            print('vector_length (Str1)  = ', len(dataSA['eps_t']), ', vector_length (Str2)  = ', len(dataSA['beta_d']),
+                  ', vector_length (Str3)  = ', len(dataSA['eps_h']), ', vector_length (Str4)  = ',
+                  len(combined_horizontal_displacement), ', vector_length (Str5)  = ',
+                  len(combined_vertical_displacement), ', vector_length (Str6)  = ', len(building_coords))
+            # Interaction analysis
+            str7 = " ".join(map(str, dataReturn['eps_t']))  # Converts numpy array to string
+            str8 = " ".join(map(str, dataReturn['strain_axial_bending_top_exx,b']))
+            str9 = " ".join(map(str, dataReturn['strain_axial_bending_bottom_exx,b']))
+            str10 = " ".join(map(str, dataReturn['tensile_strain_midpoint']))
+            # print(len(dataReturn['eps_t']), len(dataReturn['strain_axial_bending_top_exx,b']),
+            #       len(dataReturn['strain_axial_bending_bottom_exx,b']), len(dataReturn['tensile_strain_midpoint']))
+            # print('vector_length = ', len(dataReturn['tensile_strain_midpoint']))
+            print('vector_length (Str7)  = ', len(dataReturn['tensile_strain_midpoint']), ', vector_length (Str8)  = ',
+                  len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str9)  = ',
+                  len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str10)  = ',
+                  len(dataReturn['tensile_strain_midpoint']))
+
+            f.write("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable,
+                                                                          highest_damage_greenfield,
+                                                                          max_tensile_eps_gf, highest_damage_SSI,
+                                                                          max_eps_t_ssi, str1, str2, str3, str4, str5,
+                                                                          str6, str7, str8, str9, str10))
+            print(' ')
+            print('--------- SCRIPT DONE ---------')
+    else:
+        print('this-> is an error')
 else:
-    print('this-> is an error')
-
+    sys.exit("Input_type must be either 'WALL' or 'TUNNEL'")
 """
 import scipy.io
 # Combine all data into a single dictionary

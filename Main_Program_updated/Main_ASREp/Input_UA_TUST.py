@@ -3,7 +3,7 @@ sys.path.append('ASREpy-main')
 sys.path.append('FunctionScripts')
 
 # %% LOAD TUNNEL PARAMETERS
-z0              = 8.00                  # [m] Tunnel center depth
+z_t              = 8.00                  # [m] Tunnel center depth
 vlt             = 0.01                  # [-] Relative Tunnel volume loss
 Kt              = 0.5                   # [-] Estimated
 D_t             = 6.00                  # [m] Diameter of tunnel

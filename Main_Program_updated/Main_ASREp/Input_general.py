@@ -58,7 +58,7 @@ building_coords           = building_offset + np.linspace(0, length_beam, num_no
 
 # %% SPRING CALIBRATION
 # SPRING STIFFNESS CALIBRATION
-Es_isotropic                  = stiffness_vertical_spring * 1E6  # Isotropic soil (N/m/m)
+Es_isotropic                  = Es * 1E6  # Isotropic soil (N/m/m)
 
 # LOADS ON FOOTING
 qfoot = 3.2 * 10 * 1000  # [N] Load on the footing per running meter, necessary for good results
