@@ -3,11 +3,13 @@ import sys
 import numpy as np
 sys.path.append('ASREpy-main')
 sys.path.append('FunctionScripts')
+sys.path.append('S:\Main_Program_updated\ASREpy-main')
 from LoadPackages import *
 
 from plotFunctions import plot_disp, plot_strain
 from strain_cal import compute_tensile_strain_Jinyan
 from localStiff3D import *
+from prepare_greenfield_disp_file import prepare_greenfield
 
 # %% Tunnel parameters
 # beam_id = "STR-1"
@@ -71,9 +73,15 @@ modelNA.set_soil_properties(Es, nis, mu_int)
 modelNA.run_model(Ux, np.zeros_like(Ux), Uz, 'strain+disp+force')  # 'disp','strain+disp', 'strain+disp+force'
 
 # Correction to account for displacements being given at bottom node.
-coorFactor = modelNA.beam_RotaT * d_na
-modelNA.beam_DispL = coorFactor + modelNA.beam_DispL
+modelNA, total_disp = moveResultLocation(modelNA, d_na, numNodes)
+F_M_deltaT_el1, F_N_deltaT_el1, F_S_deltaT_el1 = compute_internal_forces(Eb * dfoot * bfoot, Eb * Ib, Eb * Ib,
+                                                                      Eb / EoverG * As, Eb / EoverG * As,
+                                                                      l_b / (numNodes - 1), Eb / EoverG, 1, total_disp,
+                                                                      numNodes)
 
+modelNA.axialForce = F_N_deltaT_el1
+
+data1 = compute_tensile_strain_Jinyan(modelNA, model_properties)
 
 
 # %% Run elastic model
@@ -96,6 +104,7 @@ model_elNA.set_beam_properties(Eb, EoverG, qfoot, d_NA=d_na)
 model_elNA.set_soil_properties(Es, nis, mu_int)
 
 model_elNA.run_model(Ux, np.zeros_like(Ux), Uz, 'strain+disp+force')
+
 
 # %% Translate from outer fibre displacement into beam axis displacements
 model_elNA, total_disp = moveResultLocation(model_elNA, d_na, numNodes)
@@ -249,13 +258,23 @@ data = {
     },
     'model_elNArecal': {
         'x_coordinate': beamX,
-        'moment': F_M_deltaT_el,
-        'axialForce': F_N_deltaT_el,
-        'shearForce': F_S_deltaT_el,
+        'moment': model_elNA.moment,
+        'axialForce': model_elNA.axialForce,
+        'shearForce': model_elNA.shearForce,
         'beam_strain_top': data['exx,t,b'],
         'beam_strain_bottom': data['exx,b,b'],
         'beam_strain_diagonal': data['tensile_strain_midpoint'],
         'true_shear_strain': data['true_shear_strain'],
+    },
+    'model_epNARECAL': {
+        'x_coordinate': beamX,
+        'axialForce': F_N_deltaT_el1,
+        'moment': modelNA.moment,
+        'shearForce': modelNA.shearForce,
+        'beam_strain_top': data1['exx,t,b'],
+        'beam_strain_bottom': data1['exx,b,b'],
+        'beam_strain_diagonal': data1['tensile_strain_midpoint'],
+        'true_shear_strain': data1['true_shear_strain'],
     }
 }
 

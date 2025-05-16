@@ -1,4 +1,5 @@
 from Input_UA_TUST import *
+import numpy as np
 
 # %% GENERIC INPUT
 output = 'OLDquoFEM'   # 'quoFEM', 'OLDquoFEM' or 'General'
@@ -11,7 +12,7 @@ solver = 'EL'                   # 'EL' is cauchy elastic solver, 'EP' is elastop
 length_beam = 20               # Beam length meters
 num_nodes = 41                 # Number of nodes
 num_elements = num_nodes - 1
-eccentricity = 0.5             # 0 or 0.5
+eccentricity = 0.0             # 0 or 0.5
 
 
 # %% BUILDING PARAMETERS

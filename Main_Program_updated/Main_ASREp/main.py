@@ -1,9 +1,10 @@
 # %% Imports
 
 import sys
+
 sys.path.append('FunctionScripts')
-from Input_general import *  # import * = import all
-# from Input_General_TUST import *
+# from Input_general import *  # import * = import all
+from Input_General_TUST import *
 from Wall_deflection_v_38 import wall_deflection, wall_deflection_direct
 from strain_analysis import *
 from FEA_LTS import categorize_damage, compute_tensile_strain_Jinyan, generate_output
@@ -20,23 +21,30 @@ sys.path.append(ASREpy_dir)
 sys.path.append("D:\Main_Program_updated\ASREpy-main")
 sys.path.append("S:\Main_Program_updated\ASREpy-main")
 
+Error_Variable = 0  # False
+
 import ASREpy
 
+# %% IF WALL
 if input_type == 'WALL':
     if avg_wall_disp_construction <= 0:
         avg_wall_disp_construction = 0
     if avg_wall_disp_installation <= 0:
         avg_wall_disp_installation = 0
     if avg_wall_disp_construction == 0 and avg_wall_disp_installation == 0 and integration_mode == 'CValues':
+        Error_Variable = 1
         print('here')
         if mode == 'SA':
             if output == 'quoFEM':
-                generate_output(output_fields, 0, output_fields, error_flag=1)
+                generate_output(output_fields, 0, output_fields, error_flag=Error_Variable)
                 sys.exit()
             elif output == 'OLDquoFEM':
                 with open("results.out", "w") as f:
-                    string1 = " ".join(map(str, np.zeros([num_elements, 0])))  # Converts numpy array to string
-                    f.write("{} {} {} {} {} {} {} {}".format(0, 0, 0, 0, 0, 1, string1, string1))
+                    str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
+                    # highest_damage_greenfield
+                    # max_tensile_eps_gf
+                    # Error_Variable
+                    f.write("{} {} {} {} {} {}".format(Error_Variable, 0, 0, str1, str1, str1))
                 sys.exit()
             else:
                 sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -46,7 +54,15 @@ if input_type == 'WALL':
                 sys.exit()
             elif output == 'OLDquoFEM':
                 with open("results.out", "w") as f:
-                    f.write("{} {} {} {} {} {} {}".format(0, 0, 0, 0, 0, 0, 1))
+                    str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
+                    str2 = " ".join(map(str, np.zeros([num_elements * 2, 0])))  # Converts numpy array to string
+                    # highest_damage_greenfield
+                    # max_tensile_eps_gf
+                    # highest_damage_SSI
+                    # max_tensile_eps_SSI
+                    # Error_Variable
+                    f.write("{} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, 0, 0, str1,
+                                                                            str1, str1, str1, str2, str2, str2, str2))
                 sys.exit()
             else:
                 sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -161,25 +177,65 @@ if input_type == 'WALL':
     else:
         sys.exit('Invalid integration mode')
 
+# %% IF TUNNEL
 elif input_type == 'TUNNEL':
-    from prepare_greenfield_disp_file import prepare_greenfield
+        if vlt <= 0:  # If volume loss is negative:
+            Error_Variable = 1
+            if mode == 'SA':
+                if output == 'quoFEM':
+                    generate_output(output_fields, 0, output_fields, error_flag=Error_Variable)
+                    sys.exit()
+                elif output == 'OLDquoFEM':
+                    with open("results.out", "w") as f:
+                        str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
+                        # highest_damage_greenfield
+                        # max_tensile_eps_gf
+                        # Error_Variable
+                        f.write("{} {} {} {} {} {}".format(Error_Variable, 0, 0, str1, str1, str1))
+                    sys.exit()
+                else:
+                    sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
+            elif mode == 'SSI':
+                if output == 'quoFEM':
+                    generate_output(output_fields, 0, output_fields, error_flag=1)
+                    sys.exit()
+                elif output == 'OLDquoFEM':
+                    with open("results.out", "w") as f:
+                        str1 = " ".join(map(str, np.zeros([num_nodes, 0])))  # Converts numpy array to string
+                        str2 = " ".join(map(str, np.zeros([num_elements * 2, 0])))  # Converts numpy array to string
+                        # highest_damage_greenfield
+                        # max_tensile_eps_gf
+                        # highest_damage_SSI
+                        # max_tensile_eps_SSI
+                        # Error_Variable
+                        f.write("{} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, 0, 0, str1,
+                                                                                str1, str1, str1, str2, str2, str2,
+                                                                                str2))
+                    sys.exit()
+                else:
+                    sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
+            else:
+                sys.exit("Error: mode must be either 'SA' or 'SSI'")
 
-    (vertical_displacement_ground_building, horizontal_displacement_ground_building,
-     building_coords) = prepare_greenfield(z0, vlt, Kt, d, length_beam, eccentricity, num_nodes)
+        else:  # So if volume loss isn't negative:
+            from prepare_greenfield_disp_file import prepare_greenfield
 
-    # %Update
-    vertical_displacement_ground_building = -1 * np.array(vertical_displacement_ground_building)  # Update coordinates
-    horizontal_displacement_ground_building = np.array(horizontal_displacement_ground_building)
+            (vertical_displacement_ground_building, horizontal_displacement_ground_building,
+             building_coords) = prepare_greenfield(z0, vlt, Kt, D_t, length_beam, eccentricity, num_nodes)
+
+            # %Update
+            vertical_displacement_ground_building = -1 * np.array(
+                vertical_displacement_ground_building)  # Update coordinates
+            horizontal_displacement_ground_building = np.array(horizontal_displacement_ground_building)
 
 
 else:
     sys.exit("Invalid input_type, either 'TUNNEL' or 'WALL'")
 
-
 # %% LIMITING TENSILE STRAIN | GREENFIELD
 
 # Green-field analysis for Limiting Tensile Strain method:
-
+print('--------- TENSILE STRAIN OUTPUT INFORMATION ---------')
 dataSA = strain_analysis_greenfield(vertical_displacement_ground_building, horizontal_displacement_ground_building,
                                     length_beam_element, length_beam, poissons_ratio, input_type)
 
@@ -193,8 +249,14 @@ if mode == 'SA':
     elif output == 'OLDquoFEM':
         with open("results.out", "w") as f:
             string1 = " ".join(map(str, dataSA['eps_t']))  # Converts numpy array to string
+            string2 = " ".join(map(str, dataSA['beta_d']))
+            string3 = " ".join(map(str, dataSA['eps_h']))
             print('vector_length = ', len(dataSA['eps_t']))
-            f.write("{} {} {} {} {} {} {} {}".format(0, 0, 0, 0, 0, 0, string1, string1))
+            # highest_damage_greenfield
+            # max_tensile_eps_gf
+            # Error_Variable
+            f.write("{} {} {} {} {} {}".format(Error_Variable, highest_damage_greenfield, max_tensile_eps_gf,
+                                               string1, string2, string3))
             sys.exit()
     else:
         sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
@@ -204,7 +266,6 @@ elif mode != 'SSI':
 # %% Jinyan model displacements
 combined_vertical_displacement = -np.array(vertical_displacement_ground_building).flatten()  # STD: FEM CONVENTION
 combined_horizontal_displacement = np.array(horizontal_displacement_ground_building).flatten()
-
 
 # UPWARDS POSITIVE, TOWARDS RIGHT POSITIVE AND COUNTERCLOCKWISE POSITIVE
 
@@ -233,18 +294,14 @@ elif solver == 'EP':
 else:
     sys.exit('Error: string solver must be EL or EP')
 
-
 # %% SET BEAM PROPERTIES
 model_el.set_beam_properties(Eb, Eb / Gb, qfoot, d_a=dist_a)
-
 
 model_el.run_model(combined_horizontal_displacement, np.zeros_like(combined_horizontal_displacement),
                    combined_vertical_displacement, 'strain+disp+force')
 
 model_properties = np.array([EA, EI, Gb, Ab, poissons_ratio, shear_factor_midpoint, building_height,
                              dist_a, neutral_line])
-
-
 
 # %% Convert forces if d_NA != 0
 # print('before conversion', model_el.axialForce)
@@ -280,11 +337,9 @@ dataReturn = compute_tensile_strain_Jinyan(model_el, model_properties)  # Call f
 
 # Calculate maximum tensile strains
 print('Tensile strain calculation for Interaction analysis analysis')
-max_eps_t_ssi = categorize_damage(dataReturn['max_e_t'])
+highest_damage_SSI, max_eps_t_ssi = categorize_damage(dataReturn['max_e_t'])
 
 # %% Validation done
-
-
 # Keep strains without units [-]
 if output == 'quoFEM':
     generate_output(dataReturn, max_eps_t_ssi, output_fields, error_flag=0)
@@ -294,18 +349,54 @@ elif output == 'OLDquoFEM':
         # f.write("{} {} {} {} {} {} {}".format(max(dataReturn['axial_strain_exx']), dataReturn['e_t_b'],
         #                                    dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
         #                                    max_eps_t_ssi[0], 0))
-        f.write("{} {} {} {} {} {} {}".format(beamZ.flatten(), dataReturn['e_t_b'],
-                                              dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
-                                              max_eps_t_ssi[0], 0))
+        # f.write("{} {} {} {} {} {} {}".format(beamZ.flatten(), dataReturn['e_t_b'],
+        #                                       dataReturn['max_e_xy'], dataReturn['max_e_t_mid'], dataReturn['max_e_t'],
+        #                                       max_eps_t_ssi[0], 0))
+        print(' ')
+        print('--------- OUTPUT INFORMATION ---------')
+        print('Total number of QoI = 13')
+        # Error_Variable
+        # highest_damage_greenfield
+        # max_tensile_eps_gf
+        # highest_damage_SSI
+        # max_eps_t_SSI
+        # Greenfield Strain analysis
+        print('There are 5 scalars: Error_Variable, highest_damage_greenfield, max_tensile_eps_gf, highest_damage_SSI,'
+              ' max_eps_t_SSI')
+        str1 = " ".join(map(str, dataSA['eps_t']))  # Converts numpy array to string
+        str2 = " ".join(map(str, dataSA['beta_d']))
+        str3 = " ".join(map(str, dataSA['eps_h']))
+        str4 = " ".join(map(str, building_coords))
+        print('vector_length (Str1)  = ', len(dataSA['eps_t']), ', vector_length (Str2)  = ', len(dataSA['beta_d']),
+              ', vector_length (Str3)  = ', len(dataSA['eps_h']), ', vector_length (Str4)  = ', len(building_coords))
+        # Interaction analysis
+        str5 = " ".join(map(str, dataReturn['eps_t']))  # Converts numpy array to string
+        str6 = " ".join(map(str, dataReturn['strain_axial_bending_top_exx,b']))
+        str7 = " ".join(map(str, dataReturn['strain_axial_bending_bottom_exx,b']))
+        str8 = " ".join(map(str, dataReturn['tensile_strain_midpoint']))
+        # print(len(dataReturn['eps_t']), len(dataReturn['strain_axial_bending_top_exx,b']),
+        #       len(dataReturn['strain_axial_bending_bottom_exx,b']), len(dataReturn['tensile_strain_midpoint']))
+        # print('vector_length = ', len(dataReturn['tensile_strain_midpoint']))
+        print('vector_length (Str5)  = ', len(dataReturn['tensile_strain_midpoint']), ', vector_length (Str6)  = ',
+              len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str7)  = ',
+              len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str8)  = ',
+              len(dataReturn['tensile_strain_midpoint']))
+
+
+        f.write("{} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable, highest_damage_greenfield,
+                                                                max_tensile_eps_gf, highest_damage_SSI, max_eps_t_ssi,
+                                                                str1, str2, str3, str4, str5, str6, str7, str8))
+        print(' ')
+        print('--------- SCRIPT DONE ---------')
 else:
-    print('this->')
+    print('this-> is an error')
 
 """
 import scipy.io
 # Combine all data into a single dictionary
 data = {
     'model': {
-        'type': "EP, mu = 30 deg, e = 0.5, d_a = 0",
+        'type': "EP, mu = 30 deg, e = 0, d_a = 4.5",
         'x_coordinate': building_coords,
         'greenfield_x': combined_horizontal_displacement,
         'greenfield_z': combined_vertical_displacement,
@@ -322,5 +413,5 @@ data = {
         'beam_strain_diagonal': model_el.beam_strain_diagonal,
     }
 }
-scipy.io.savemat("mu30e0.5da0.mat", data)
+scipy.io.savemat("mu30e0da45.mat", data)
 """
