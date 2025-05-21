@@ -78,6 +78,10 @@ def compute_tensile_strain_Jinyan(model, model_properties):
         (((strain_axial_normal * (1 + poissons_ratio)) / 2) ** 2)
         + (true_shear_strain ** 2))
 
+    eps_t = np.zeros_like(tensile_strain_midpoint)  # Create return vector
+    for i in range(len(tensile_strain_midpoint.flatten())):
+        eps_t[i] = max(tensile_strain_midpoint[i], tensile_strain_top[i], tensile_strain_bottom[i])
+
     dataReturn = {  # Make a DATA struct for all models run
         'axial_strain_exx': strain_axial_normal,
         'max_exx': max(strain_axial_normal),
@@ -90,6 +94,7 @@ def compute_tensile_strain_Jinyan(model, model_properties):
         'tensile_strain_midpoint': tensile_strain_midpoint,
         'max_e_xy': max(true_shear_strain),
         'max_e_t_mid': max(tensile_strain_midpoint),
+        'eps_t': eps_t,
         'max_e_t': max(max(max(tensile_strain_top), max(tensile_strain_bottom)), max(tensile_strain_midpoint))
     }
 

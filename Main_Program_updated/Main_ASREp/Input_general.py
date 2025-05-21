@@ -2,6 +2,25 @@ from Input_uncertainty_analysis import *
 import numpy as np
 import scipy
 
+
+# This script defines the uncertainty variables used in quoFEM
+
+# MATERIAL PARAMETERS Conversion
+
+EA      = EA * 1E9                       # [N]
+GAs     = GAs * 1E9                      # [N]
+EI      = EI * 1E9                       # [N*m^2]
+
+# BUILDING INFORMATION
+building_height = 36.0                   # [m] From building top to bottom foundation
+neutral_line    = 18.0                   # [m] Neutral axis IN PURE bending. # Distance from BOTTOM FIBRE of BEAM
+dist_a          = 18.0                   # [m] Location of beam-soil interface. 0 = beam axis, h/2 beam bottom fibre
+# level as soil. Any value offset, where neutral axis is above ground level is treated as positive.
+
+C1                          = 0.27      # [-] day 114
+C2                          = 0.27      # [-]
+
+
 # %% INPUT PARAMETERS
 
 
@@ -19,13 +38,13 @@ if integration_mode == 'Direct':  # Example of how to load data
 poissons_ratio      = 0.3           # [-] For the building materials
 
 # BUILDING PARAMETERS
-building_offset     = 20            # [m] Offset from wall
+building_offset     = 17.5          # [m] Offset from wall
 building_width      = 1             # [m] Width of building foundation
-length_beam         = 20            # [m] Length of beam (or building)
-Ab                  = building_height * building_width  # [m^2] Cross-sectional building area
+length_beam         = 12            # [m] Length of beam (or building)
+Ab                  = 2.76          # [m^2] Cross-sectional building area
 Eb                  = EA / Ab       # [Pa] Young's modulus of building
 Ib                  = EI / Eb       # [m^4] Second moment of area
-Gb                  = GAs / (Ab * (10 + 10 * poissons_ratio) / (12 + 11 * poissons_ratio))  # [Pa] Shear modulus
+Gb                  = GAs / 1.65    # [Pa] Shear modulus
 foundation_depth    = 2.2           # [m] Depth positive
 
 
@@ -35,7 +54,7 @@ soil_ovalization    = 0             # [-] Soil ovalization
 volumetric          = 1             # [-] Volumetric
 
 # RETAINING WALL PARAMETERS
-retaining_wall_depth        = 25.0  # [m] Depth of the retaining wall
+# retaining_wall_depth        = 20.7  # [m] Depth of the retaining wall
 shape_wall_deflection_i     = 2     # [-] Shape of wall deflection for installation effects
 shape_wall_deflection_c     = 5     # [-] Shape of wall deflection for construction/excavation effects
                                     # Shape of wall deflection M0-M4 | 0 = Uniform, 1 = Cantilever, 2 = Parabola type, 3 = Composite type, 4 = Kick-in type, 5 Custom
@@ -48,7 +67,7 @@ vertical_to_horizontal_gradient = 1.0   # [-] zv/zt - vertical to horizontal gra
 # %% MESH PARAMETERS
 
 # GEOMETRY
-num_nodes                 = 21     # Number of nodes
+num_nodes                 = 41     # Number of nodes
 num_elements              = num_nodes - 1         # Number of elements
 degrees_freedom_per_node  = 3                     # Degrees of freedom per node
 num_global_DOF            = degrees_freedom_per_node * num_nodes  # Total number of DEGREES OF FREEDOM
@@ -65,8 +84,8 @@ qfoot = 3.2 * 10 * 1000  # [N] Load on the footing per running meter, necessary 
 # %% PARAMETER CALIBRATION AND CONVERSION
 
 # WALL DISPLACEMENT CONVERSION TO PERCENT
-avg_wall_disp_installation = avg_wall_disp_installation / 100    # Installation effects
-avg_wall_disp_construction = avg_wall_disp_construction / 100       # Construction sequence
+avg_wall_disp_installation = 0  # avg_wall_disp_installation / 100    # Installation effects
+avg_wall_disp_construction = avg_wall_disp / 100       # Construction sequence
 
 # CONVERSION OF PARAMETERS (AUTOMATIC RECTANGULAR CROSSSECTION)
 total_degrees_freedom     = num_nodes * degrees_freedom_per_node         # Total degrees of freedom
