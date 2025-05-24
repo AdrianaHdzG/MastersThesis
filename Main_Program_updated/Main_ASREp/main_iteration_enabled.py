@@ -27,7 +27,7 @@ import ASREpy
 
 # %% Iteration control #
 scale = 1
-resultlength = scale * 2 * round(retaining_wall_depth)       # How many iteration loops should be run?
+resultlength = 1 # scale * 2 * round(retaining_wall_depth)       # How many iteration loops should be run?
 result_LTS_Array = np.zeros([resultlength, 5])       # Result array
 
 # Save the output matlab array file with  max(LTS) as:
