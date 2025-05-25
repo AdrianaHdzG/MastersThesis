@@ -19,6 +19,8 @@ if integration_mode == 'Direct':  # Example of how to load data
 
 
 # BUILDING PARAMETERS
+building_height     = 36.0          # [m] From building top to bottom foundation
+neutral_line        = 18.0          # [m] Neutral axis IN PURE bending. # Distance from BOTTOM FIBRE of BEAM
 building_offset     = 17.5          # [m] Offset from wall
 building_width      = 1             # [m] Width of building foundation
 length_beam         = 12            # [m] Length of beam (or building)
@@ -69,8 +71,6 @@ if mode == 'SSI':
     Gb = GAs / 1.65  # [Pa] Shear modulus
 
     # BUILDING INFORMATION
-    building_height = 36.0  # [m] From building top to bottom foundation
-    neutral_line = 18.0  # [m] Neutral axis IN PURE bending. # Distance from BOTTOM FIBRE of BEAM
     dist_a = 18.0  # [m] Location of beam-soil interface. 0 = beam axis, h/2 beam bottom fibre
     # level as soil. Any value offset, where neutral axis is above ground level is treated as positive.
 
