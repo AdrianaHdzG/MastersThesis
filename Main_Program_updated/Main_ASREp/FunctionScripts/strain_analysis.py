@@ -110,7 +110,6 @@ def strain_analysis_greenfield(disp_vertical, disp_horizontal, length_beam_eleme
             'eps_h_max': max(horizontal_strain),  # max Horizontal strain, length (1) unit [-]
 
             'S': slope,  # Greenfield slope (uz), length (num_elem) unit [-]
-            'kappa': curvature,  # Greenfield curvature unit [1/m]
             'omega_gf': omega_greenfield,  # Tilt of building, length (1) unit [-]
         }
 
