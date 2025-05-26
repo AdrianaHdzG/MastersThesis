@@ -239,7 +239,7 @@ else:
 print('--------- TENSILE STRAIN OUTPUT INFORMATION ---------')
 dataSA = strain_analysis_greenfield(vertical_displacement_ground_building, horizontal_displacement_ground_building,
                                     length_beam_element, length_beam, building_height, neutral_line, poissons_ratio,
-                                    input_type)
+                                    input_type, def_mode)
 
 print("Tensile strain calculation for Greenfield analysis")
 highest_damage_greenfield, max_tensile_eps_gf = categorize_damage(dataSA['eps_t_max'])  # Highest damage category
