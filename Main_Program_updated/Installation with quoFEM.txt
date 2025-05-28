@@ -1,0 +1,1 @@
+Upload the python folder into "quoFEM\applications" and unpack it. Then it should work, if you update the sys.append.path("path to ASRE-main") in the main file of MAIN ASREpy folder 
