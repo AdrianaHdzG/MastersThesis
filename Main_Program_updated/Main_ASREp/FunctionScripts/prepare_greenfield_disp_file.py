@@ -33,12 +33,9 @@ def prepare_greenfield_disp_file(val_data_dir, vl, beam_id, beamX):
 
 def prepare_greenfield(z0, vlt, Kt, d, l_b, eccentricity, num):
 
-    if eccentricity == 0:
-        domainStart = -0.5 * l_b
-        domainEnd = 0.5 * l_b
-    if eccentricity == 0.5:
-        domainStart = -l_b
-        domainEnd = 0
+    # Describe the domail
+    domainStart = -(0.5 + eccentricity) * l_b
+    domainEnd = (0.5 - eccentricity) * l_b
 
     x_coord = np.linspace(domainStart, domainEnd, num)  # Create domain vec.
 

@@ -25,9 +25,10 @@ soil_poisson    = 0.5                   # [-]
 # %% GENERIC INPUT
 output = 'OLDquoFEM'   # 'quoFEM', 'OLDquoFEM' or 'General'
 mode = 'SSI'           # 'SA' = Greenfield strain analysis, 'SSI' Soil-Structure-Interaction analysis. SSI includes SA
-input_type = 'TUNNEL'                # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default
-solver = 'EL'                   # 'EL' is cauchy elastic solver, 'EP' is elastoplasic solver
-# solver = 'EP'                   # 'EL' is cauchy elastic solver, 'EP' is elastoplasic solver
+def_mode = 'Shear'     # Primary Deformation mode of greenfield structure, 'Shear' or 'Bending'
+input_type = 'TUNNEL'  # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default
+solver = 'EL'          # 'EL' is cauchy elastic solver, 'EP' is elastoplasic solver
+# solver = 'EP'        # 'EL' is cauchy elastic solver, 'EP' is elastoplasic solver
 
 # %% GEOMETRY
 length_beam = 20               # Beam length meters
