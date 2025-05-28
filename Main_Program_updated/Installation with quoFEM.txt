@@ -1,1 +1,7 @@
-Upload the python folder into "quoFEM\applications" and unpack it. Then it should work, if you update the sys.append.path("path to ASRE-main") in the main file of MAIN ASREpy folder 
+Upload the python folder found at this link:
+
+https://drive.google.com/file/d/1xknxJ8UUk-4_NTX3ORBzG08KKd6Ut_6I/view?usp=sharing
+
+It is 400 MB, so too large for GitHub (Max file size 100MB :/)
+
+Put that Python folder into "quoFEM\applications" and unpack it. Then it should work, if you update the sys.append.path("path to ASRE-main") in the main file of MAIN ASREp folder 
