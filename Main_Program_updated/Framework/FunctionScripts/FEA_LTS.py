@@ -28,7 +28,7 @@ def categorize_damage(element_strain):
         return 5, tensile_strain
 
 
-def compute_tensile_strain_Jinyan(model, model_properties):
+def compute_tensile_strain(model, model_properties):
     """
     Compute the tensile strain for a beam element.
 

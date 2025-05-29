@@ -7,7 +7,7 @@ from Input_general import *  # import * = import all
 # from Input_General_TUST import *
 from Wall_deflection_v_38 import wall_deflection, wall_deflection_direct
 from strain_analysis import *
-from FEA_LTS import categorize_damage, compute_tensile_strain_Jinyan, generate_output
+from FEA_LTS import categorize_damage, compute_tensile_strain, generate_output
 from localStiff3D import *
 from Output_uncertainty_analysis import *
 import os
@@ -71,8 +71,8 @@ if input_type == 'WALL':
 
     # %% Direct integration:
     if integration_mode == 'Direct':
-        delta_wall = data_wall[
-                         "delta_wall"].flatten() / 1000  # Flatten to remove unnecessary dimensions + CONVERT TO [MM]
+        delta_wall = data_wall["delta_wall"].flatten() / 1000
+        # Flatten to remove unnecessary dimensions + CONVERT TO [M]
         depth_w = data_wall["depth_w"].flatten()
 
         horizontal_displacement_ground_building, vertical_displacement_ground_building, dvec, dw = wall_deflection_direct(
@@ -337,7 +337,7 @@ data = {  # Make a DATA struct for all models run
 '''
 
 # %% Recalculate strains to ensure strains are correct
-dataReturn = compute_tensile_strain_Jinyan(model_el, model_properties)  # Call function to calculate new strains
+dataReturn = compute_tensile_strain(model_el, model_properties)  # Call function to calculate new strains
 
 # Calculate maximum tensile strains
 print('Tensile strain calculation for Interaction analysis analysis')

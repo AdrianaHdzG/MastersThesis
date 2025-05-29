@@ -16,5 +16,3 @@ retaining_wall_depth        = 20.7      # [m] Depth of the retaining wall from s
 # SOIL INITIAL PARAMETERS
 
 Es                          = 175        # [MN/m] (COV = 14-68% according to Zhao and DeJong, 2023. The lower limit is used --> standard deviation = 0.14)
-
-

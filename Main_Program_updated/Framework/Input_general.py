@@ -8,6 +8,7 @@ import scipy
 
 output = 'OLDquoFEM'   # 'quoFEM', 'OLDquoFEM' or 'General'
 mode = 'SSI'           # 'SA' = Greenfield strain analysis, 'SSI' Soil-Structure-Interaction analysis. SSI includes SA
+def_mode = 'Shear'     # Primary Deformation mode of greenfield structure, 'Shear' or 'Bending'
 input_type = 'TUNNEL'  # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default
 integration_mode = 'CValues'       # 'CValues' uses C1, C2, C3 or modes. 'Direct' uses a datafile like below.
 # integration_mode = 'Direct'

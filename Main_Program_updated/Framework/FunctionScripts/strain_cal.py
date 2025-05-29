@@ -1,6 +1,6 @@
 import numpy as np
 
-def compute_tensile_strain_Jinyan(model, model_properties):
+def compute_tensile_strain(model, model_properties):
 
 
     """
