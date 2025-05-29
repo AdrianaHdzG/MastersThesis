@@ -343,7 +343,7 @@ dataReturn = compute_tensile_strain(model_el, model_properties)  # Call function
 print('Tensile strain calculation for Interaction analysis analysis')
 highest_damage_SSI, max_eps_t_ssi = categorize_damage(dataReturn['max_e_t'])
 
-# %% Validation done
+# %% CALCULATIONS DONE, SAVE RESULTS
 # Keep strains without units [-]
 if input_type == 'TUNNEL':
     if output == 'quoFEM':
