@@ -10,8 +10,8 @@ EI      = 2777                        # [GN*m^2]
 poissons_ratio      = 0.3           # [-] For the building materials
 
 # Wall parameters
-avg_wall_disp               = 0.33      # [%] day 114, Construction sequence (COV = 73.11% for tunnelling according to Zhao and DeJong, 2023) Same COV considered here
-retaining_wall_depth        = 20.7      # [m] Depth of the retaining wall from surface to rigid layer
+avg_wall_disp                 = 0.28      # [%] day 357 for IN22
+retaining_wall_depth          = 20.7      # [m] Depth of the retaining wall from surface to rigid layer
 
 # SOIL INITIAL PARAMETERS
 
