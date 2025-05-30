@@ -22,7 +22,7 @@ if integration_mode == 'Direct':  # Example of how to load data
 # BUILDING PARAMETERS
 building_height     = 36.0          # [m] From building top to bottom foundation
 neutral_line        = 18.0          # [m] Neutral axis IN PURE bending. # Distance from BOTTOM FIBRE of BEAM
-building_offset     = 17.5          # [m] Offset from wall
+building_offset     = 11.0          # [m] Offset from wall
 building_width      = 1             # [m] Width of building foundation
 length_beam         = 12            # [m] Length of beam (or building)
 foundation_depth    = 2.2           # [m] Depth positive
@@ -43,7 +43,7 @@ shape_wall_deflection_c     = 5     # [-] Shape of wall deflection for construct
 
 # % MESH PARAMETERS
 # GEOMETRY
-num_nodes                 = 41     # Number of nodes
+num_nodes                 = 101     # Number of nodes
 num_elements              = num_nodes - 1         # Number of elements
 
 # BUILDING COORDINATES
