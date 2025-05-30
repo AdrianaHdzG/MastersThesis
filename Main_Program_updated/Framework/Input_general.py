@@ -35,11 +35,10 @@ volumetric          = 1             # [-] Volumetric
 
 # RETAINING WALL PARAMETERS
 # retaining_wall_depth        = 20.7  # [m] Depth of the retaining wall
-C1                          = 0.06      # [-] day 114
-C2                          = 0.59      # [-]
-shape_wall_deflection_i     = 2     # [-] Shape of wall deflection for installation effects
-shape_wall_deflection_c     = 5     # [-] Shape of wall deflection for construction/excavation effects
-                                    # Shape of wall deflection M0-M4 | 0 = Uniform, 1 = Cantilever, 2 = Parabola type, 3 = Composite type, 4 = Kick-in type, 5 Custom
+C1                          = -0.36   # [-] day 114
+C2                          = 1.29    # [-]
+shape_wall_deflection_i     = 2       # [-] Shape of wall deflection for installation effects
+shape_wall_deflection_c     = 5       # [-] Shape of wall deflection for construction/excavation effects
 
 # % MESH PARAMETERS
 # GEOMETRY
