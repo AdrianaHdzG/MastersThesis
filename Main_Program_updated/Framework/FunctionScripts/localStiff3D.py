@@ -11,13 +11,14 @@ def moveResultLocation(model, d_a, numNodes):
     total_disp[5::6] = model.beam_RotaV.reshape(-1, 1)  # [ras] Vertical rotations
     return model, total_disp
 
-def localTim3D(EA, EIy, EIz, GAy, GAz, l, G, K):
+
+def localTim3Dold(EA, EIy, EIz, GAy, GAz, l, G, K):
     '''
     Calculates the local 3D stiffness matrix for a Timoshenko beam
     Args:
         EA: Axial stiffness
-        EIy: Bending stiffness around the z axis
-        EIz: Bending stiffness around the y axis
+        EIy: Bending stiffness around the z axis (Moment rotates around z-axis)
+        EIz: Bending stiffness around the y axis (Moment rotates around y-axis)
         GAy: Shear stiffness in the x-y plane
         GAz: Shear stiffness in the x-z plane
         l: Length of the beam element
@@ -29,8 +30,8 @@ def localTim3D(EA, EIy, EIz, GAy, GAz, l, G, K):
 
     phi_y = 12 * (EIz / (GAy * l ** 2))
     phi_z = 12 * (EIy / (GAz * l ** 2))
-    kz = EIz / ((1 + phi_y) * l ** 2)
-    ky = EIy / ((1 + phi_z) * l ** 2)
+    kz = EIz / ((1 + phi_y) * l ** 3)
+    ky = EIy / ((1 + phi_z) * l ** 3)
     K_local = np.zeros([12, 12])
 
     # %% Indexing the axial stiffness
@@ -216,3 +217,123 @@ def KBern3D_foot_TIM_dNA(E, d_foot, b_foot, dx, EGratio, ni_str, d_NA):
     K[11, 11] = (4 + phi3) * E * phi3Bar * I33 / L
 
     return K
+
+
+
+
+
+def localTim3D(EA, EIy, EIz, GAy, GAz, l, G, J):
+    '''
+    Calculates the local 3D stiffness matrix for a Timoshenko beam
+    Args:
+        EA: Axial stiffness
+        EIy: Bending stiffness around the z axis (Moment rotates around z-axis)
+        EIz: Bending stiffness around the y axis (Moment rotates around y-axis)
+        GAy: Shear stiffness in the x-y plane
+        GAz: Shear stiffness in the x-z plane
+        l: Length of the beam element
+        G: Isotropic Shear stiffness
+        K: Saint Venant torsional stiffness
+
+    Returns: K_local
+    '''
+
+    # Due to convension, EIy = EIzz and likewise
+    EIyy = EIz
+    EIzz = EIy
+
+    # New matrix:
+
+    phi_z = 12 * EIzz / (GAz * (l ** 2))
+    phi_z_bar = 1 / (1 + phi_z)
+
+    phi_y = 12 * EIyy / (GAy * (l ** 2))
+    phi_y_bar = 1 / (1 + phi_y)
+
+
+    K_local = np.zeros([12, 12])
+
+    # %% Indexing the axial stiffness
+    K_local[0, 0] = EA / l
+    K_local[0, 6] = -EA / l
+    K_local[6, 0] = -EA / l
+    K_local[6, 6] = EA / l
+
+
+    # %% Indexing torsion
+    K_local[3, 3] = G * J / l  # St. Venant torsion
+    K_local[3, 9] = -G * J / l  # St. Venant torsion
+    K_local[9, 3] = -G * J / l  # St. Venant torsion
+    K_local[9, 9] = G * J / l  # St. Venant torsion
+
+
+    # %% Indexing the 2nd row / col
+    K_local[1, 1] = 12 * phi_z_bar * EIzz / l ** 3  # kz11
+    K_local[1, 5] = 6 * phi_z_bar * EIzz / l ** 2  # kz12
+    K_local[5, 1] = 6 * phi_z_bar * EIzz / l ** 2  # kz21
+
+    K_local[7, 1] = -12 * phi_z_bar * EIzz / l ** 3
+    K_local[1, 7] = -12 * phi_z_bar * EIzz / l ** 3
+
+    K_local[11, 1] = 6 * phi_z_bar * EIzz / l ** 2
+    K_local[1, 11] = 6 * phi_z_bar * EIzz / l ** 2
+
+    # Now col 3
+    K_local[2, 2] = 12 * phi_y_bar * EIyy / l ** 3  # ky11
+    K_local[2, 4] = -6 * phi_y_bar * EIyy / l ** 2
+    K_local[4, 2] = -6 * phi_y_bar * EIyy / l ** 2
+
+    K_local[2, 8] = -12 * phi_y_bar * EIyy / l ** 3
+    K_local[8, 2] = -12 * phi_y_bar * EIyy / l ** 3
+
+    K_local[2, 10] = -6 * phi_y_bar * EIyy / l ** 2
+    K_local[10, 2] = -6 * phi_y_bar * EIyy / l ** 2
+
+    # Now Col 4 - Already done as this is torsion
+
+    # Now Col 5
+    K_local[4, 4] = (4 + phi_y) * phi_y_bar * EIyy / l  # ky11
+    K_local[4, 8] = 6 * phi_y_bar * EIyy / l ** 2
+    K_local[8, 4] = 6 * phi_y_bar * EIyy / l ** 2
+
+    K_local[4, 10] = (2 - phi_y) * phi_y_bar * EIyy / l
+    K_local[10, 4] = (2 - phi_y) * phi_y_bar * EIyy / l
+
+    # Col 6
+    K_local[5, 5] = (4 + phi_z) * phi_z_bar * EIzz / l  # ky11
+    K_local[5, 7] = -6 * phi_z_bar * EIzz / l ** 2
+    K_local[7, 5] = -6 * phi_z_bar * EIzz / l ** 2
+
+    K_local[5, 11] = (2 - phi_z) * phi_z_bar * EIzz / l
+    K_local[11, 5] = (2 - phi_z) * phi_z_bar * EIzz / l
+
+    # Col 7 DOne (Axial)
+
+    # Col 8
+    K_local[7, 7] = 12 * phi_z_bar * EIzz / l ** 3
+    K_local[7, 11] = -6 * phi_z_bar * EIzz / l ** 2
+    K_local[11, 7] = -6 * phi_z_bar * EIzz / l ** 2
+
+    # Col 9
+    K_local[8, 8] = 12 * phi_y_bar * EIyy / l ** 3
+    K_local[8, 10] = 6 * phi_y_bar * EIyy / l ** 2
+    K_local[10, 8] = 6 * phi_y_bar * EIyy / l ** 2
+
+    # Col 10 torsion skip
+
+    # Col 11
+    K_local[10, 10] = (4 + phi_y) * phi_y_bar * EIyy / l  # ky11
+
+    # Col 12
+    K_local[11, 11] = (4 + phi_z) * phi_z_bar * EIzz / l  # ky11
+
+
+    '''
+    K_local[2, 4] = -6 * phi_y_bar * EIyy / l ** 2  # ky12
+    '''
+
+
+
+
+    return K_local
+
