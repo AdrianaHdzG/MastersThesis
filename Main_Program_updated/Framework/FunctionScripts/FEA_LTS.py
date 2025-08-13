@@ -68,6 +68,10 @@ def compute_tensile_strain(model, model_properties):
     tensile_strain_top = strain_axial_normal + strain_axial_bending_top
     tensile_strain_bottom = strain_axial_normal + strain_axial_bending_bottom
 
+    TS_bending = np.zeros_like(tensile_strain_top)
+    for i in range(0, len(tensile_strain_top)):
+        TS_bending[i] = max(tensile_strain_top[i], tensile_strain_bottom[i])
+
     # gamma = V/GAs & e_xy = gamma / 2
     true_shear_strain = (model.shearForce * shear_factor_midpoint / GAs) / 2
 
@@ -87,6 +91,8 @@ def compute_tensile_strain(model, model_properties):
         'max_exx': max(strain_axial_normal),
         'strain_axial_bending_top_exx,b': strain_axial_bending_top,
         'strain_axial_bending_bottom_exx,b': strain_axial_bending_bottom,
+        'TS_bending': TS_bending,
+
         'exx,t,b': tensile_strain_top,
         'exx,b,b': tensile_strain_bottom,
         'e_t_b': max(max(tensile_strain_top), max(tensile_strain_bottom)),  # Only max positive strains

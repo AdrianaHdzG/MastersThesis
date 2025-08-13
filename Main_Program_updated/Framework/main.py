@@ -464,17 +464,16 @@ elif input_type == 'WALL':
         print('this-> is an error')
 else:
     sys.exit("Input_type must be either 'WALL' or 'TUNNEL'")
-"""
+# """
 import scipy.io
 # Combine all data into a single dictionary
 data = {
     'model': {
-        'type': "EP, mu = 30 deg, e = 0, d_a = 4.5",
+        'type': f"{solver}, d_a = {dist_a}",
         'x_coordinate': building_coords,
         'greenfield_x': combined_horizontal_displacement,
         'greenfield_z': combined_vertical_displacement,
-        'interface_angle_in_degrees': mu,
-        'eccentricity': eccentricity,
+        #'interface_angle_in_degrees': mu,
         'd_a': dist_a,
         'disp_beam_x': model_el.beam_DispL,
         'disp_beam_z': model_el.beam_DispV,
@@ -484,7 +483,13 @@ data = {
         'beam_strain_top': model_el.beam_strain_top,
         'beam_strain_bottom': model_el.beam_strain_bottom,
         'beam_strain_diagonal': model_el.beam_strain_diagonal,
+        'beam_strain_top_recal': dataReturn['strain_axial_bending_top_exx,b'],
+        'beam_strain_bottom_recal': dataReturn['strain_axial_bending_bottom_exx,b'],
+        'beam_strain_diagonal_recal': dataReturn['tensile_strain_midpoint'],  # Maximum tensile strain from shear + axl
+        'eps_t_recal': dataReturn['eps_t'],
+        'TS_bending': dataReturn['TS_bending'],  # Maximum tensile strain from bending + axial
     }
 }
-scipy.io.savemat("mu30e0da45.mat", data)
-"""
+
+scipy.io.savemat(f"model_{solver}_da{str(dist_a).replace('.', 'p')}.mat", data)
+# """
