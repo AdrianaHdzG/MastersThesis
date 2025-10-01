@@ -9,10 +9,11 @@ import scipy
 output = 'OLDquoFEM'   # 'quoFEM', 'OLDquoFEM' or 'General'
 mode = 'SSI'           # 'SA' = Greenfield strain analysis, 'SSI' Soil-Structure-Interaction analysis. SSI includes SA
 def_mode = 'Shear'     # Primary Deformation mode of greenfield structure, 'Shear' or 'Bending'
-input_type = 'TUNNEL'  # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default
+
+
 integration_mode = 'CValues'       # 'CValues' uses C1, C2, C3 or modes. 'Direct' uses a datafile like below.
 # integration_mode = 'Direct'
-input_type = 'WALL'                # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default
+input_type = 'WALL'                # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default. "3DWall" to use the 3D greenfield
 solver = 'EL'                      # 'EL' is cauchy elastic solver, 'EP' is elastoplasic solver
 
 if integration_mode == 'Direct':  # Example of how to load data
@@ -40,6 +41,8 @@ C2                          = 1.29    # [-]
 shape_wall_deflection_i     = 2       # [-] Shape of wall deflection for installation effects
 shape_wall_deflection_c     = 5       # [-] Shape of wall deflection for construction/excavation effects
 
+
+
 # % MESH PARAMETERS
 # GEOMETRY
 num_nodes                 = 101     # Number of nodes
@@ -56,6 +59,45 @@ avg_wall_disp_construction = avg_wall_disp / 100       # Construction sequence
 
 # Calculate element length
 length_beam_element       = length_beam / num_elements                   # Length of beam element [m]
+
+# % 3D GREENFIELD PARAMETERS
+# These parameters are only used if integration_mode = '3DWall'
+# Station box dimensions
+L_x = 9.5           # [m] Half-length of the station box
+L_y = 32.0          # [m] Half-width of the station box
+He_Hwratio = 1.0               # [-] Ratio of He/Hw
+
+# Avg_wall_displacement (beta) for each wall
+beta_CCS_wall_1 = 0.075/100
+beta_CCS_wall_2 = 0.075/100
+beta_CCS_wall_3 = 0.075/100
+beta_CCS_wall_4 = 0.075/100
+
+# DMM parameters for 3D wall deflection shape (match MATLAB C1, C2 values)
+C1_3D                       = -0.36   # [-] day 114
+C2_3D                       = 1.29    # [-]
+
+
+# Vertical wall deflection shape (match MATLAB switches)
+#   3  : Parabolic
+#   30 : Parabolic + Mu & Huang longitudinal reduction (Gaussian)
+#   31 : Parabolic + Roboski & Finno (erfc-type)
+#   5  : DMM combo (C1 cantilever, C2 parabolic, C3 kick-in)
+#   50 : DMM + Mu & Huang
+#   51 : DMM + Roboski & Finno
+switch_shape_3D = 5
+
+# Discretization for the cavity stacks
+delta_z_cavities_3D   = retaining_wall_depth / 19.0   # vertical bins (m)
+delta_xyperimeter_3D  = 2.5                           # along-wall segment size (m)
+
+# Solution type for symmetry/taper:
+#   1 = single wall mirrored
+#   2 = 4 walls analytical (no taper)
+#   3 = 4 walls semi-analytical (with taper)  ← recommended
+switch_solution_type_3D = 3
+
+
 
 # %% IF MODE = SSI
 if mode == 'SSI':

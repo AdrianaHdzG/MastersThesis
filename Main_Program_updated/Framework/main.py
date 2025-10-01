@@ -6,6 +6,7 @@ sys.path.append('FunctionScripts')
 from Input_general import *  # import * = import all
 # from Input_General_TUST import *
 from Wall_deflection_v_38 import wall_deflection, wall_deflection_direct
+from greenfield_3D_DMM import run_greenfield_3D_line
 from strain_analysis import *
 from FEA_LTS import categorize_damage, compute_tensile_strain, generate_output
 from localStiff3D import *
