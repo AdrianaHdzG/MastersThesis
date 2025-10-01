@@ -229,6 +229,109 @@ elif input_type == 'TUNNEL':
             vertical_displacement_ground_building = -1 * np.array(
                 vertical_displacement_ground_building)  # Update coordinates
             horizontal_displacement_ground_building = np.array(horizontal_displacement_ground_building)
+# %% IF 3D WALL (installation via 2D, construction via 3D tapered)
+elif input_type == '3DWALL':
+
+    # ---- guard: this 3D method is only valid with CValues ----
+    if integration_mode != 'CValues':
+        sys.exit("Error: input_type '3DWall' only supports integration_mode == 'CValues'.")
+
+    # ---- empty-input guard (mirror WALL logic) ----
+    if avg_wall_disp_construction <= 0:
+        avg_wall_disp_construction = 0
+    if avg_wall_disp_installation <= 0:
+        avg_wall_disp_installation = 0
+
+    if avg_wall_disp_construction == 0 and avg_wall_disp_installation == 0:
+        Error_Variable = 1
+        if mode == 'SA':
+            if output == 'quoFEM':
+                generate_output(output_fields, 0, output_fields, error_flag=Error_Variable)
+                sys.exit()
+            elif output == 'OLDquoFEM':
+                with open("results.out", "w") as f:
+                    str1 = " ".join(map(str, np.zeros([num_nodes])))
+                    f.write("{} {} {} {} {} {} {} {}".format(Error_Variable, 0, 0, str1, str1, str1, str1, str1))
+                sys.exit()
+            else:
+                sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM"')
+        elif mode == 'SSI':
+            if output == 'quoFEM':
+                generate_output(output_fields, 0, output_fields, error_flag=1)
+                sys.exit()
+            elif output == 'OLDquoFEM':
+                with open("results.out", "w") as f:
+                    str1 = " ".join(map(str, np.zeros([num_nodes])))
+                    str2 = " ".join(map(str, np.zeros([num_elements * 2])))
+                    f.write("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}".format(
+                        Error_Variable, 0, 0, 0, 0, str1, str1, str1, str1, str1, str1, str2, str2, str2, str2
+                    ))
+                sys.exit()
+            else:
+                sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM"')
+        else:
+            sys.exit("Error: mode must be either 'SA' or 'SSI'")
+
+    # ================= INSTALLATION EFFECTS (2D — unchanged) =================
+    if avg_wall_disp_installation == 0:
+        vertical_displacement_installation   = np.zeros([1, num_nodes])
+        horizontal_displacement_installation = np.zeros([1, num_nodes])
+    else:
+        Sx_ins, Sz_ins, *_ = wall_deflection(
+            retaining_wall_depth,
+            avg_wall_disp_installation,
+            shape_wall_deflection_i,
+            soil_ovalization,
+            volumetric,
+            x_coords=building_coords,
+            C1_val=C1, C2_val=C2,
+            foundation_depth=foundation_depth
+        )
+        vertical_displacement_installation   = Sz_ins
+        horizontal_displacement_installation = Sx_ins
+
+    # Superpose (start from installation)
+    combined_vertical_displacement   = vertical_displacement_installation.copy()
+    combined_horizontal_displacement = horizontal_displacement_installation.copy()
+
+    # ================= CONSTRUCTION EFFECTS (3D tapered) =================
+    if avg_wall_disp_construction == 0:
+        vertical_displacement_construction   = np.zeros([1, num_nodes])
+        horizontal_displacement_construction = np.zeros([1, num_nodes])
+        cavity_depth_vec  = np.array([])
+        delta_wall_vector = np.array([])
+    else:
+        ux, uy, uz, cavity_depth_vec, delta_wall_vector = run_greenfield_3D_line(
+            Hw=retaining_wall_depth,
+            L_x=L_x, L_y=L_y, He_Hwratio=He_Hwratio,
+            nu=soil_poisson,
+            switch_shape=switch_shape_3D, C1=C1_3D, C2=C2_3D,
+            beta_CCS_wall_1=beta_CCS_wall_1, beta_CCS_wall_2=beta_CCS_wall_2,
+            beta_CCS_wall_3=beta_CCS_wall_3, beta_CCS_wall_4=beta_CCS_wall_4,
+            delta_z_cavities=delta_z_cavities_3D,
+            delta_xyperimeter_cavities=delta_xyperimeter_3D,
+            switch_solution_type=switch_solution_type_3D,
+            building_offset=building_offset, length_beam=length_beam,
+            num_nodes_3D = num_nodes, y0=y0_line, z0=z0_line
+        )
+        horizontal_displacement_construction = ux
+        vertical_displacement_construction   = uz
+
+    # Elastic superposition
+    combined_vertical_displacement   += vertical_displacement_construction
+    combined_horizontal_displacement += horizontal_displacement_construction
+
+    
+    print("combined_vertical_displacement:", combined_vertical_displacement)
+    print("combined_vertical_displacement shape:", np.shape(combined_vertical_displacement))
+    print("combined_horizontal_displacement:", combined_horizontal_displacement)
+    print("combined_horizontal_displacement shape:", np.shape(combined_horizontal_displacement))
+
+
+    # Hand over to downstream pipeline
+    vertical_displacement_ground_building   = combined_vertical_displacement.flatten()
+    horizontal_displacement_ground_building = combined_horizontal_displacement.flatten()
+
 
 
 else:
@@ -463,8 +566,54 @@ elif input_type == 'WALL':
             print('--------- SCRIPT DONE ---------')
     else:
         print('this-> is an error')
+
+
+elif input_type == '3DWALL':
+    if output == 'quoFEM':
+        generate_output(dataReturn, max_eps_t_ssi, output_fields, error_flag=0)
+
+    elif output == 'OLDquoFEM':
+        with open("results.out", "w") as f:
+            print(' ')
+            print('--------- OUTPUT INFORMATION ---------')
+            print('Total number of QoI = 15')
+            print(
+                'There are 5 scalars: Error_Variable, highest_damage_greenfield, max_tensile_eps_gf, highest_damage_SSI, max_eps_t_SSI')
+            str1 = " ".join(map(str, dataSA['eps_t']))  # Greenfield tensile strain
+            str2 = " ".join(map(str, dataSA['beta_d']))  # Angular distortion
+            str3 = " ".join(map(str, dataSA['eps_h']))   # Horizontal strain
+            str4 = " ".join(map(str, combined_horizontal_displacement))
+            str5 = " ".join(map(str, combined_vertical_displacement))
+            str6 = " ".join(map(str, building_coords))
+            print('vector_length (Str1)  = ', len(dataSA['eps_t']), ', vector_length (Str2)  = ',
+                  len(dataSA['beta_d']),
+                  ', vector_length (Str3)  = ', len(dataSA['eps_h']), ', vector_length (Str4)  = ',
+                  len(combined_horizontal_displacement), ', vector_length (Str5)  = ',
+                  len(combined_vertical_displacement), ', vector_length (Str6)  = ', len(building_coords))
+            # Interaction analysis
+            str7 = " ".join(map(str, dataReturn['eps_t']))
+            str8 = " ".join(map(str, dataReturn['strain_axial_bending_top_exx,b']))
+            str9 = " ".join(map(str, dataReturn['strain_axial_bending_bottom_exx,b']))
+            str10 = " ".join(map(str, dataReturn['tensile_strain_midpoint']))
+            print('vector_length (Str7)  = ', len(dataReturn['tensile_strain_midpoint']),
+                  ', vector_length (Str8)  = ',
+                  len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str9)  = ',
+                  len(dataReturn['strain_axial_bending_bottom_exx,b']), ', vector_length (Str10)  = ',
+                  len(dataReturn['tensile_strain_midpoint']))
+
+            f.write("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}".format(Error_Variable,
+                                                                          highest_damage_greenfield,
+                                                                          max_tensile_eps_gf, highest_damage_SSI,
+                                                                          max_eps_t_ssi, str1, str2, str3, str4, str5,
+                                                                          str6, str7, str8, str9, str10))
+            print(' ')
+            print('--------- SCRIPT DONE ---------')
+    else:
+        print('this-> is an error')
+
 else:
-    sys.exit("Input_type must be either 'WALL' or 'TUNNEL'")
+    sys.exit("Input_type must be either 'WALL', 'TUNNEL', or '3DWALL'")
+
 # """
 import scipy.io
 # Combine all data into a single dictionary

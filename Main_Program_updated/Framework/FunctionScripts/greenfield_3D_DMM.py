@@ -68,7 +68,7 @@ def run_greenfield_3D_line(
     # solution (1=single wall mirrored, 2=four walls analytical, 3=four walls semi-analytical)
     switch_solution_type=3,
     # output line (your building coordinates)
-    building_offset=11.0, length_beam=12.0, num_nodes=101, y0=0.0, z0=0.0,
+    building_offset=11.0, length_beam=12.0, num_nodes_3D=101, y0=0.0, z0=0.0,
 ):
     """
     Compute 3D greenfield displacements along a 1D building line (x-direction),
@@ -84,7 +84,7 @@ def run_greenfield_3D_line(
         delta_z_cavities = Hw/19.0
 
     # ---- build the evaluation line (global coords) ----
-    x_line = (L_x + building_offset) + np.linspace(0.0, length_beam, num_nodes)
+    x_line = (L_x + building_offset) + np.linspace(0.0, length_beam, num_nodes_3D)
     y_line = np.full_like(x_line, y0, dtype=float)
     z_line = np.full_like(x_line, z0, dtype=float)
 

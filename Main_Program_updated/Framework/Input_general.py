@@ -13,7 +13,7 @@ def_mode = 'Shear'     # Primary Deformation mode of greenfield structure, 'Shea
 
 integration_mode = 'CValues'       # 'CValues' uses C1, C2, C3 or modes. 'Direct' uses a datafile like below.
 # integration_mode = 'Direct'
-input_type = 'WALL'                # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default. "3DWall" to use the 3D greenfield
+input_type = '3DWALL'                # 'TUNNEL' is the tunnelling case from Franza et al [2020], 'WALL' is default. "3DWALL" to use the 3D greenfield
 solver = 'EL'                      # 'EL' is cauchy elastic solver, 'EP' is elastoplasic solver
 
 if integration_mode == 'Direct':  # Example of how to load data
@@ -51,6 +51,7 @@ num_elements              = num_nodes - 1         # Number of elements
 # BUILDING COORDINATES
 building_coords           = building_offset + np.linspace(0, length_beam, num_nodes)  # x-coordinates for the building [m]
 
+
 # % PARAMETER CALIBRATION AND CONVERSION
 
 # WALL DISPLACEMENT CONVERSION TO PERCENT
@@ -67,6 +68,9 @@ L_x = 9.5           # [m] Half-length of the station box
 L_y = 32.0          # [m] Half-width of the station box
 He_Hwratio = 1.0               # [-] Ratio of He/Hw
 
+y0_line         = 0.0    # [m] fixed y for the line at y = 0 centerline of the station box representative of 2D case
+z0_line         = foundation_depth   # [m] elevation of the line (0=ground surface)
+
 # Avg_wall_displacement (beta) for each wall
 beta_CCS_wall_1 = 0.075/100
 beta_CCS_wall_2 = 0.075/100
@@ -77,6 +81,8 @@ beta_CCS_wall_4 = 0.075/100
 C1_3D                       = -0.36   # [-] day 114
 C2_3D                       = 1.29    # [-]
 
+
+building_coords_3D = (L_x + building_offset) + np.linspace(0.0, length_beam, num_nodes)
 
 # Vertical wall deflection shape (match MATLAB switches)
 #   3  : Parabolic
