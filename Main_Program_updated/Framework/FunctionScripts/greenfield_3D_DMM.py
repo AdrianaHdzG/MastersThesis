@@ -2,6 +2,8 @@
 import numpy as np
 from math import erf, erfc
 
+
+
 # ---- helpers (direct ports, minimal edits) ----
 def _depth_parabolic(z_vec, Hw):
     z = np.asarray(z_vec).reshape(-1, 1)
@@ -151,8 +153,8 @@ def run_greenfield_3D_line(
     Lwall_1 = 2*L_x;  Lwall_2 = 2*L_y;  Lwall_3 = 2*L_x;  Lwall_4 = 2*L_y
 
     # ---- z discretization: cavities at mid-intervals ----
-    z_wall_discr = np.arange(0.0, Hw + delta_z_cavities, delta_z_cavities)            # nodes
-    z_cav        = (z_wall_discr[:-1] + z_wall_discr[1:]) * 0.5                       # mids
+    z_wall_discr = np.arange(0.0, Hw + delta_z_cavities, delta_z_cavities)
+    z_cav = 0.5 * (z_wall_discr[:-1] + z_wall_discr[1:])
 
     # ---- choose depth and longitudinal functions ----
     if switch_shape in (3, 30, 31):
@@ -246,7 +248,8 @@ def run_greenfield_3D_line(
                 Sz += Fw_line * uz
 
     # ---- mask inside the station (greenfield outside only) ----
-    inside = (x_line >= -L_x) & (x_line <= L_x) & (np.abs(y_line) <= L_y)
+    
+    inside = (x_line >= -L_x) & (x_line <= L_x) & (np.abs(y_line) <= L_y )
     Sx = Sx * (~inside)
     Sy = Sy * (~inside)
     Sz = Sz * (~inside)
