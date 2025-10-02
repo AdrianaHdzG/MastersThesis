@@ -7,7 +7,7 @@ import scipy
 
 
 output = 'OLDquoFEM'   # 'quoFEM', 'OLDquoFEM' or 'General'
-mode = 'SSI'           # 'SA' = Greenfield strain analysis, 'SSI' Soil-Structure-Interaction analysis. SSI includes SA
+mode = 'SA'           # 'SA' = Greenfield strain analysis, 'SSI' Soil-Structure-Interaction analysis. SSI includes SA
 def_mode = 'Shear'     # Primary Deformation mode of greenfield structure, 'Shear' or 'Bending'
 
 
@@ -26,7 +26,7 @@ neutral_line        = 18.0          # [m] Neutral axis IN PURE bending. # Distan
 building_offset     = 11.0          # [m] Offset from wall
 building_width      = 1             # [m] Width of building foundation
 length_beam         = 12            # [m] Length of beam (or building)
-foundation_depth    = 2.2           # [m] Depth positive
+foundation_depth    = 0           # [m] Depth positive 2.2
 
 
 # SOIL PARAMETERS
@@ -36,8 +36,8 @@ volumetric          = 1             # [-] Volumetric
 
 # RETAINING WALL PARAMETERS
 # retaining_wall_depth        = 20.7  # [m] Depth of the retaining wall
-C1                          = -0.36   # [-] day 114
-C2                          = 1.29    # [-]
+C1                          = 0  # [-] day 114 -0.36
+C2                          = 1    # [-] 1.29 
 shape_wall_deflection_i     = 2       # [-] Shape of wall deflection for installation effects
 shape_wall_deflection_c     = 5       # [-] Shape of wall deflection for construction/excavation effects
 
@@ -64,25 +64,26 @@ length_beam_element       = length_beam / num_elements                   # Lengt
 # % 3D GREENFIELD PARAMETERS
 # These parameters are only used if integration_mode = '3DWall'
 # Station box dimensions
-L_x = 9.5           # [m] Half-length of the station box
-L_y = 32.0          # [m] Half-width of the station box
-He_Hwratio = 1.0               # [-] Ratio of He/Hw
+L_x_3D = 2          # [m] Half-width of the station box
+L_y_3D = 200.0          # [m] Half-length of the station box
+He_Hwratio_3D = 1.0               # [-] Ratio of He/Hw
 
 y0_line         = 0.0    # [m] fixed y for the line at y = 0 centerline of the station box representative of 2D case
-z0_line         = foundation_depth   # [m] elevation of the line (0=ground surface)
+z0_line         = 0  # [m] elevation of the line (0=ground surface)
 
 # Avg_wall_displacement (beta) for each wall
-beta_CCS_wall_1 = 0.075/100
-beta_CCS_wall_2 = 0.075/100
-beta_CCS_wall_3 = 0.075/100
-beta_CCS_wall_4 = 0.075/100
+beta_CCS_wall_1_3D = avg_wall_disp / 100
+beta_CCS_wall_2_3D = avg_wall_disp / 100
+beta_CCS_wall_3_3D = avg_wall_disp / 100
+beta_CCS_wall_4_3D = avg_wall_disp / 100
 
 # DMM parameters for 3D wall deflection shape (match MATLAB C1, C2 values)
-C1_3D                       = -0.36   # [-] day 114
-C2_3D                       = 1.29    # [-]
+C1_3D                       = 0   # [-] day 114
+C2_3D                       = 1    # [-]
 
-
-building_coords_3D = (L_x + building_offset) + np.linspace(0.0, length_beam, num_nodes)
+building_offset_3D = building_offset  # [m] Offset from wall
+building_coords_3D = (L_x_3D + building_offset) + np.linspace(0.0, length_beam, num_nodes)
+length_beam_3D = length_beam  # [m] Length of beam (or building)
 
 # Vertical wall deflection shape (match MATLAB switches)
 #   3  : Parabolic
@@ -94,7 +95,7 @@ building_coords_3D = (L_x + building_offset) + np.linspace(0.0, length_beam, num
 switch_shape_3D = 5
 
 # Discretization for the cavity stacks
-delta_z_cavities_3D   = retaining_wall_depth / 19.0   # vertical bins (m)
+delta_z_cavities_3D   = retaining_wall_depth / retaining_wall_depth   # vertical bins (m)
 delta_xyperimeter_3D  = 2.5                           # along-wall segment size (m)
 
 # Solution type for symmetry/taper:

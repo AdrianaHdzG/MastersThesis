@@ -175,6 +175,11 @@ if input_type == 'WALL':
         # Rewrite here:
         vertical_displacement_ground_building = combined_vertical_displacement
         horizontal_displacement_ground_building = combined_horizontal_displacement
+
+        print("combined_vertical_displacement:", combined_vertical_displacement)
+        print("combined_vertical_displacement shape:", np.shape(combined_vertical_displacement))
+        print("combined_horizontal_displacement:", combined_horizontal_displacement)
+        print("combined_horizontal_displacement shape:", np.shape(combined_horizontal_displacement))
     else:
         sys.exit('Invalid integration mode')
 
@@ -303,15 +308,15 @@ elif input_type == '3DWALL':
     else:
         ux, uy, uz, cavity_depth_vec, delta_wall_vector = run_greenfield_3D_line(
             Hw=retaining_wall_depth,
-            L_x=L_x, L_y=L_y, He_Hwratio=He_Hwratio,
+            L_x=L_x_3D, L_y=L_y_3D, He_Hwratio=He_Hwratio_3D,
             nu=soil_poisson,
             switch_shape=switch_shape_3D, C1=C1_3D, C2=C2_3D,
-            beta_CCS_wall_1=beta_CCS_wall_1, beta_CCS_wall_2=beta_CCS_wall_2,
-            beta_CCS_wall_3=beta_CCS_wall_3, beta_CCS_wall_4=beta_CCS_wall_4,
+            beta_CCS_wall_1=beta_CCS_wall_1_3D, beta_CCS_wall_2=beta_CCS_wall_2_3D,
+            beta_CCS_wall_3=beta_CCS_wall_3_3D, beta_CCS_wall_4=beta_CCS_wall_4_3D,
             delta_z_cavities=delta_z_cavities_3D,
             delta_xyperimeter_cavities=delta_xyperimeter_3D,
             switch_solution_type=switch_solution_type_3D,
-            building_offset=building_offset, length_beam=length_beam,
+            building_offset=building_offset_3D, length_beam=length_beam_3D,
             num_nodes_3D = num_nodes, y0=y0_line, z0=z0_line
         )
         horizontal_displacement_construction = ux
@@ -348,6 +353,43 @@ dataSA = strain_analysis_greenfield(vertical_displacement_ground_building, horiz
 print("Tensile strain calculation for Greenfield analysis")
 highest_damage_greenfield, max_tensile_eps_gf = categorize_damage(dataSA['eps_t_max'])  # Highest damage category
 
+
+import numpy as np
+import scipy.io
+# quick helper: round to ~8 significant figures
+def round8(x):
+    return np.round(np.asarray(x, dtype=float), 8)
+
+if input_type == 'WALL':
+   mat_filename = "greenfield_SA_8.mat"
+elif input_type == '3DWALL':
+   mat_filename = "greenfield_SA_3D_8.mat"
+
+scipy.io.savemat(mat_filename, {
+    'greenfield': {
+        'x_coordinate': round8(building_coords),
+        'ux': round8(combined_horizontal_displacement),
+        'uz': round8(combined_vertical_displacement),
+        'slope': round8(dataSA['S']),
+        'eps_dt_no_tilt': round8(dataSA['eps_dt_no_tilt']),
+        'eps_t': round8(dataSA['eps_t']),
+        'beta_d': round8(dataSA['beta_d']),
+        'eps_h': round8(dataSA['eps_h']),
+    },
+    'meta': {
+        'mode': 'SA',
+        'input_type': str(input_type),
+        'integration_mode': str(integration_mode),
+        'length_beam': float(length_beam),
+        'num_nodes': len(building_coords),
+    }
+})
+
+print(f"[saved] {mat_filename}")
+
+
+
+
 if mode == 'SA':
     if output == 'quoFEM':
         generate_output(output_fields, 0, output_fields, error_flag=1)
@@ -370,6 +412,7 @@ if mode == 'SA':
         sys.exit('Error: output field must be either "quoFEM" or "OLDquoFEM')
 elif mode != 'SSI':
     sys.exit("Error: mode must be either 'SA' or 'SSI'")
+
 
 # %% Jinyan model displacements
 combined_vertical_displacement = -np.array(vertical_displacement_ground_building).flatten()  # STD: FEM CONVENTION

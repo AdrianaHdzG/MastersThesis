@@ -18,7 +18,7 @@ def strain_analysis_greenfield(disp_vertical, disp_horizontal, length_beam_eleme
     """
     # save_input_variables(disp_vertical, disp_horizontal, length_beam_element, length_beam, nu)
 
-    if flag == 'WALL':
+    if flag in ['WALL', 'WALL3D']:
         # Calculate horizontal strain
         horizontal_strain = np.gradient(disp_horizontal[0], length_beam_element)  # [-] Horizontal strain
 

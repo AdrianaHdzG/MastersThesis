@@ -6,7 +6,7 @@ from math import erf, erfc
 def _depth_parabolic(z_vec, Hw):
     z = np.asarray(z_vec).reshape(-1, 1)
     delta_w = (-6.0 / Hw) * z**2 + 6.0 * z
-    return np.maximum(delta_w, 0.0)
+    return delta_w
 
 def _depth_dmm(z_vec, Hw, C1, C2, C3):
     z = np.asarray(z_vec).reshape(-1, 1)
@@ -15,7 +15,7 @@ def _depth_dmm(z_vec, Hw, C1, C2, C3):
         + C2 * ((-6.0 / Hw) * z**2 + 6.0 * z)
         + C3 * (2.0 * z)
     )
-    return np.maximum(delta_w, 0.0)
+    return delta_w
 
 def _long_none(s_vec, Lwall, Hw, He_Hwratio):
     return np.ones((1, len(s_vec)), dtype=float)
@@ -81,7 +81,7 @@ def run_greenfield_3D_line(
         raise ValueError("C1+C2+C3 must be 1 for switch_shape=5/50/51")
 
     if delta_z_cavities is None:
-        delta_z_cavities = Hw/19.0
+        delta_z_cavities = 1.0  # default 1m vertical bins
 
     # ---- build the evaluation line (global coords) ----
     x_line = (L_x + building_offset) + np.linspace(0.0, length_beam, num_nodes_3D)
