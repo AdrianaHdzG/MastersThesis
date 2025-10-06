@@ -19,6 +19,7 @@ plot_var = "yes"  # "yes" or "no" to define if plot wanted or not
 
 ASREpy_dir = os.path.join(os.path.dirname(__file__), "..", "ASREpy-main")
 sys.path.append(ASREpy_dir)
+sys.path.append("C:\\Users\\Adriana.Hernandez\\OneDrive - Aarhus universitet\\Industrial PhD\\06 WP\\04 SSI\\MastersThesis\\Main_Program_updated\\ASREpy-main")
 sys.path.append("D:\Main_Program_updated\ASREpy-main")
 sys.path.append("S:\Main_Program_updated\ASREpy-main")
 
@@ -353,7 +354,7 @@ dataSA = strain_analysis_greenfield(vertical_displacement_ground_building, horiz
 print("Tensile strain calculation for Greenfield analysis")
 highest_damage_greenfield, max_tensile_eps_gf = categorize_damage(dataSA['eps_t_max'])  # Highest damage category
 
-
+"""
 import numpy as np
 import scipy.io
 # quick helper: round to ~8 significant figures
@@ -361,9 +362,9 @@ def round8(x):
     return np.round(np.asarray(x, dtype=float), 8)
 
 if input_type == 'WALL':
-   mat_filename = "greenfield_SA_8.mat"
+   mat_filename = "greenfield_SA_amh.mat"
 elif input_type == '3DWALL':
-   mat_filename = "greenfield_SA_3D_8.mat"
+   mat_filename = "greenfield_SA_3D_amh.mat"
 
 scipy.io.savemat(mat_filename, {
     'greenfield': {
@@ -386,7 +387,7 @@ scipy.io.savemat(mat_filename, {
 })
 
 print(f"[saved] {mat_filename}")
-
+"""
 
 
 
